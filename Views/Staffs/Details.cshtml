@@ -1,0 +1,99 @@
+﻿@model ScannerApp.Models.Staff
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Staff</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.photoUrl)
+        </dt>
+
+        <dd>
+          @*  @Html.DisplayFor(model => model.photoUrl)*@  
+            <img src="@Url.Content(Model.photoUrl)" height=200  />
+        </dd>         
+
+        <dt>
+            @Html.DisplayNameFor(model => model.deptName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.deptName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fiUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fiUrl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.imToken)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.imToken)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.appId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.appId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.imUserId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.imUserId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.deptId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.deptId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.personType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.personType)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.perId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

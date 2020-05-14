@@ -1,0 +1,122 @@
+﻿@model ScannerApp.Models.AccessRecord
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>AccessRecord</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.recordTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.recordTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.passType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.passType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.sn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.sn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.equipName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.equipName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.photoUrl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.photoUrl)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.photoSize)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.photoSize)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.arType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.arType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.temperature)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.temperature)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.deptId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.deptId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.deptName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.deptName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cardNum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cardNum)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

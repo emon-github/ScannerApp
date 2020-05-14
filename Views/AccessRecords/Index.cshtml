@@ -1,0 +1,105 @@
+﻿@model IEnumerable<ScannerApp.Models.AccessRecord>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.recordTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.passType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.equipName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.photoUrl)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.photoSize)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.arType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.temperature)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.deptId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.deptName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.cardNum)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.recordTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.passType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.equipName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.photoUrl)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.photoSize)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.phone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.arType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.temperature)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.deptId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.deptName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.cardNum)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>

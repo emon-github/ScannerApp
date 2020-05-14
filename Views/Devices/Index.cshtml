@@ -1,0 +1,147 @@
+﻿@model IEnumerable<ScannerApp.Models.Device>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.createUserId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.equipName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.isBind)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.softVersion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.sn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.password)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ip)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.token)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.updateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.imUserId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.imToken)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.appId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.temperature)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.deptId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.deptName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.companyName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.dataType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.validateTime)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.createUserId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.equipName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.isBind)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.softVersion)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.sn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.password)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ip)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.status)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.token)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.createTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.updateTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.imUserId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.imToken)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.appId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.temperature)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.deptId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.deptName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.companyName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.dataType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.validateTime)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })
+        </td>
+    </tr>
+}
+
+</table>
