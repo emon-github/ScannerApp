@@ -266,7 +266,6 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Devices\Create.cshtml" />
     <Content Include="Views\Devices\Delete.cshtml" />
-    <Content Include="Views\Devices\Details.cshtml" />
     <Content Include="Views\Devices\Edit.cshtml" />
     <Content Include="Views\Devices\Index.cshtml" />
     <Content Include="Views\Staffs\Create.cshtml" />
@@ -283,6 +282,7 @@
     <Content Include="Views\Selfregistration\UploadPhoto.cshtml" />
     <Content Include="Views\Selfregistration\Notice.cshtml" />
     <Content Include="Views\UserList\Index.cshtml" />
+    <Content Include="Views\Devices\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202005082021448_initial-create.resx">

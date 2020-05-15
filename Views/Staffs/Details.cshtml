@@ -15,24 +15,16 @@
         </dt>
 
         <dd>
-          @*  @Html.DisplayFor(model => model.photoUrl)*@  
-            <img src="@Url.Content(Model.photoUrl)" height=200  />
-        </dd>         
+            <img src="@Url.Content(Model.photoUrl)" height=200 />
+            <hr />
+        </dd>        
 
         <dt>
-            @Html.DisplayNameFor(model => model.deptName)
+            @Html.DisplayNameFor(model => model.name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.deptName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.fiUrl)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.fiUrl)
+            @Html.DisplayFor(model => model.name)
         </dd>
 
         <dt>
@@ -44,51 +36,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.imToken)
+            @Html.DisplayNameFor(model => model.deptName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.imToken)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.appId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.appId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.imUserId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.imUserId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.deptId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.deptId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.personType)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.personType)
+            @Html.DisplayFor(model => model.deptName)
         </dd>
 
     </dl>
