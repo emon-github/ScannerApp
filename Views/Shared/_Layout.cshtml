@@ -25,7 +25,7 @@
                     <li>@Html.ActionLink("Register Visitor", "Index", "Selfregistration")</li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("User", "Index", "UserList")</li>
+                        <li>@Html.ActionLink("Client", "Index", "UserList")</li>
                         <li>@Html.ActionLink("Device", "Index", "Devices")</li>
                         <li>@Html.ActionLink("Visitor", "Index", "Staffs")</li>
                         <li>@Html.ActionLink("Access Record", "Index", "AccessRecords")</li>

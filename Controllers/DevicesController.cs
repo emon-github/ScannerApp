@@ -38,6 +38,8 @@ namespace ScannerApp.Controllers
         // GET: Devices/Create
         public ActionResult Create()
         {
+            ViewBag.Client = new SelectList(db.Users.ToList(), "UserName", "UserName");
+
             return View();
         }
 
@@ -46,7 +48,7 @@ namespace ScannerApp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,createUserId,equipName,isBind,softVersion,sn,password,ip,status,token,createTime,updateTime,imUserId,imToken,appId,temperature,deptId,deptName,companyName,dataType,validateTime")] Device device)
+        public ActionResult Create([Bind(Include = "id,createUserId,equipName,isBind,softVersion,sn,password,ip,status,token,createTime,updateTime,imUserId,imToken,appId,temperature,deptId,deptName,companyName,dataType,validateTime, client")] Device device)
         {
             if (ModelState.IsValid)
             {
@@ -70,6 +72,8 @@ namespace ScannerApp.Controllers
             {
                 return HttpNotFound();
             }
+
+            ViewBag.Client = new SelectList(db.Users.ToList(), "UserName", "UserName");
             return View(device);
         }
 
@@ -78,7 +82,7 @@ namespace ScannerApp.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,createUserId,equipName,isBind,softVersion,sn,password,ip,status,token,createTime,updateTime,imUserId,imToken,appId,temperature,deptId,deptName,companyName,dataType,validateTime")] Device device)
+        public ActionResult Edit([Bind(Include = "id,createUserId,equipName,isBind,softVersion,sn,password,ip,status,token,createTime,updateTime,imUserId,imToken,appId,temperature,deptId,deptName,companyName,dataType,validateTime,client")] Device device)
         {
             if (ModelState.IsValid)
             {

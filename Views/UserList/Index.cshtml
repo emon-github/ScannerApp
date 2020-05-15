@@ -1,4 +1,6 @@
-﻿@model IEnumerable<ScannerApp.Models.UserListViewModel>
+﻿@model PagedList.IPagedList <ScannerApp.Models.UserListViewModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Users";
 }
@@ -6,23 +8,36 @@
 <h2>Index</h2>
 
 <p>
-   
+
     @Html.ActionLink("New User", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })
 </p>
+
+@using (Html.BeginForm())
+{
+    <p>
+        Search: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
+
+
 
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.UserName)
+            @Html.ActionLink("User Name", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            @* @Html.DisplayNameFor(model => model.UserName)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Phone)
+            @Html.ActionLink("Phone", "Index", new { sortOrder = ViewBag.PhoneSortParm, currentFilter = ViewBag.CurrentFilter })
+            @* @Html.DisplayNameFor(model => model.Phone)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Email)
+            Email
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Role)
+            @Html.ActionLink("Role", "Index", new { sortOrder = ViewBag.RoleSortParm, currentFilter = ViewBag.CurrentFilter })
+            @* @Html.DisplayNameFor(model => model.Role)*@
         </th>
     </tr>
 
@@ -44,3 +59,9 @@
         </tr>
     }
 </table>
+
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

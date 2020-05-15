@@ -11,10 +11,13 @@ namespace ScannerApp.Models
     {
         public int ID { get; set; }
         [Display(Name = "Name")]
+        [Required]
         public string Name { get; set; }
         [Display(Name = "Phone")]
+        [Required]
         public string Phone { get; set; }
         [Display(Name = "Gender")]
+        [Required]
         public int Gender { get; set; }
     }
 }

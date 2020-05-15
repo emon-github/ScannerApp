@@ -50,5 +50,8 @@ namespace ScannerApp.Models
         public string dataType { get; set; }
         [ScaffoldColumn(false)]
         public string validateTime { get; set; }
+
+        [Display(Name = "Client")]
+        public string client { get; set; }
     }
 }

@@ -9,7 +9,7 @@ using System.Web.Mvc;
 namespace ScannerApp.Controllers
 {
     public class SelfregistrationController : Controller
-    {        
+    {
         public ActionResult Index()
         {
             return View();
@@ -18,8 +18,8 @@ namespace ScannerApp.Controllers
         [HttpPost]
         public ActionResult Index([Bind(Include = "ID,Name,Phone,Gender")] Registration registration)
         {
-            string name = registration.Name;
-            int gender = registration.Gender;
+            string phone = registration.Phone;
+            TempData["Employee"] = phone;
 
             return RedirectToAction("UploadPhoto");
         }
@@ -32,14 +32,33 @@ namespace ScannerApp.Controllers
         [HttpPost]
         public ActionResult UploadPhoto(HttpPostedFileBase file)
         {
-            if (file.ContentLength > 0)
+            string phone = "";
+
+            if (TempData["Employee"] != null)
             {
-                var fileName = Path.GetFileName(file.FileName);
-                var path = Path.Combine(Server.MapPath("~/App_Data/uploads"), fileName);
-                file.SaveAs(path);
+                phone = TempData["Employee"].ToString();
             }
 
-            return RedirectToAction("Notice");
+            string path = Server.MapPath("~/App_Data/uploads/");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
+            
+            if (file != null)
+            {
+                var fileNameExt = Path.GetFileName(file.FileName);
+                string[] ext = fileNameExt.ToString().Split('.');
+                string name = string.IsNullOrEmpty(phone) ? ext[0] : phone;               
+                file.SaveAs(Path.Combine(path, name + "." + ext[1]));
+                return RedirectToAction("Notice");
+            }
+            else
+            {
+                ViewBag.Message = "Please Select any file";
+                return View();
+            }
         }
 
         public ActionResult Notice()
