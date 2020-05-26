@@ -2,10 +2,15 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
+using QRCoder;
 using ScannerApp.Models;
 
 namespace ScannerApp.Controllers
@@ -15,10 +20,52 @@ namespace ScannerApp.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Devices
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            return View(db.Devices.ToList());
+            //string url = Url.Content("~/");
+            //string uri1 = Request.Url.GetLeftPart(UriPartial.Authority) + Url.Content("~");
+
+            List<Device> list = db.Devices.ToList();
+
+            //return View(db.Devices.ToList());
+             int pageSize = 5;
+            int pageNumber = (page ?? 1);
+            return View(list.ToPagedList(pageNumber, pageSize));  
         }
+
+        //[HttpGet]
+        //public ActionResult GenerateQR()
+        //{
+        //    string url = Url.Content("~/");
+        //    string uri1 = Request.Url.GetLeftPart(UriPartial.Authority) + Url.Content("~");
+
+        //    return View();
+        //}
+        
+        public ActionResult GenerateQR(string sn)
+        {
+            
+            string uri1 = Request.Url.GetLeftPart(UriPartial.Authority) + Url.Content("~");
+            string qr = uri1 + "/Selfregistration?id=" + sn;
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                QRCodeGenerator qrGenerator = new QRCodeGenerator();               
+                QRCodeData data = qrGenerator.CreateQrCode(qr, QRCodeGenerator.ECCLevel.Q);
+                QRCode qrCode = new QRCoder.QRCode(data);
+
+                using (Bitmap bitMap = qrCode.GetGraphic(20))
+                {
+                    bitMap.Save(ms, ImageFormat.Png);
+                    ViewBag.QRCodeImage = "data:image/png;base64," + Convert.ToBase64String(ms.ToArray());
+                }
+            }
+
+            return View();
+        }
+
+
+
 
         // GET: Devices/Details/5
         public ActionResult Details(string id)
@@ -72,8 +119,13 @@ namespace ScannerApp.Controllers
             {
                 return HttpNotFound();
             }
+            if (device.client == null)
+            {
+                device.client = "";
+            }
 
-            ViewBag.Client = new SelectList(db.Users.ToList(), "UserName", "UserName");
+            ViewBag.Client = new SelectList(db.Users.ToList(), "UserName", "UserName", device.client );
+            ViewBag.Default = device.client;
             return View(device);
         }
 

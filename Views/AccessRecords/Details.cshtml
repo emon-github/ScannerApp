@@ -7,23 +7,23 @@
 <h2>Details</h2>
 
 <div>
-    <h4>AccessRecord</h4>
+    <h4>Access Record</h4>
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.photoUrl)
+        </dt>
+
+        <dd>
+            <img src="http://175.143.69.73:8085/@Url.Content(Model.photoUrl)" height=250 />
+            <hr />
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.recordTime)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.recordTime)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.passType)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.passType)
         </dd>
 
         <dt>
@@ -43,22 +43,6 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.photoUrl)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.photoUrl)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.photoSize)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.photoSize)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.name)
         </dt>
 
@@ -75,29 +59,13 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.arType)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.arType)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.temperature)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.temperature)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.deptId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.deptId)
-        </dd>
-
+        
         <dt>
             @Html.DisplayNameFor(model => model.deptName)
         </dt>
@@ -116,7 +84,6 @@
 
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+<p>   
     @Html.ActionLink("Back to List", "Index")
 </p>

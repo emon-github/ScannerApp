@@ -71,7 +71,7 @@ namespace ScannerApp.Controllers
                     break;
             }
 
-            int pageSize = 2;
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(list.ToPagedList(pageNumber, pageSize));            
         }

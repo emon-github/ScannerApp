@@ -1,105 +1,102 @@
-﻿@model IEnumerable<ScannerApp.Models.AccessRecord>
+﻿
+@model PagedList.IPagedList<ScannerApp.Models.AccessRecord>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Access Record";
 }
 
-<h2>Index</h2>
+<h3>Access Records</h3>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@using (Html.BeginForm())
+{
+    <p>
+        Search: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
+
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.recordTime)
+            Time
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.passType)
+            Device
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.sn)
+            Device Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.equipName)
+            Photo
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.photoUrl)
+            Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.photoSize)
+            Phone
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.name)
+            Temperature
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.phone)
+            Department Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.arType)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.temperature)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.deptId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.deptName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.cardNum)
+            Card Num
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.recordTime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.passType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.sn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.equipName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.photoUrl)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.photoSize)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.phone)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.arType)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.temperature)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.deptId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.deptName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.cardNum)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.recordTime)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.sn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.equipName)
+            </td>
+            <td>
+                @*@Html.DisplayFor(modelItem => item.photoUrl)*@
+                <img src="http://175.143.69.73:8085/@Url.Content( item.photoUrl)" height="50" alt="Image" />
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.phone)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.temperature)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.deptName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cardNum)
+            </td>
+            <td>
+                <a href="@Url.Action("Details", "AccessRecords",new { id = item.id })" class="btn btn-info" data-toggle="tooltip" title="Details">
+                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                </a>
+            </td>
+        </tr>
+    }
 
 </table>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }))
+
+<script>
+    $(function () { $("[data-toggle = 'tooltip']").tooltip(); });
+</script>

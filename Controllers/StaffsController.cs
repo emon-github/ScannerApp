@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 using ScannerApp.Models;
 
 namespace ScannerApp.Controllers
@@ -15,9 +16,33 @@ namespace ScannerApp.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Staffs
-        public ActionResult Index()
+        public ActionResult Index(string currentFilter, string searchString,  int? page)
         {
-            return View(db.Staffs.ToList());
+
+            if (searchString != null)
+            {
+                searchString = searchString.ToLower();
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewBag.CurrentFilter = searchString;
+
+            // return View(db.Staffs.Where(_ => !string.IsNullOrEmpty(_.photoUrl)).ToList());
+
+            List<Staff> list = db.Staffs.Where(_ => !string.IsNullOrEmpty(_.photoUrl)).OrderByDescending(_ => _.photoUrl).ToList();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                list = list.Where(s => s.name.ToLower().Contains(searchString)
+                                       || s.phone.ToLower().Contains(searchString)).ToList();
+            }
+
+            int pageSize = 5;
+            int pageNumber = (page ?? 1);
+            return View(list.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Staffs/Details/5

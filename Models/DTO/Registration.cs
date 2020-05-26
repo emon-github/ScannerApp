@@ -16,8 +16,9 @@ namespace ScannerApp.Models
         [Display(Name = "Phone")]
         [Required]
         public string Phone { get; set; }
-        [Display(Name = "Gender")]
-        [Required]
+
+        [Display(Name = "Gender")]        
+       
         public int Gender { get; set; }
     }
 }

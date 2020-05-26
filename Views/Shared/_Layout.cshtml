@@ -25,10 +25,41 @@
                     <li>@Html.ActionLink("Register Visitor", "Index", "Selfregistration")</li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li>@Html.ActionLink("Client", "Index", "UserList")</li>
-                        <li>@Html.ActionLink("Device", "Index", "Devices")</li>
-                        <li>@Html.ActionLink("Visitor", "Index", "Staffs")</li>
-                        <li>@Html.ActionLink("Access Record", "Index", "AccessRecords")</li>
+                        if (User.IsInRole("Admin"))
+                        {                            
+                            <li>@Html.ActionLink("Client", "Index", "UserList")</li>
+                            <li>@Html.ActionLink("Device", "Index", "Devices")</li>
+                            <li>@Html.ActionLink("Visitor", "Index", "Staffs")</li>
+                            <li>@Html.ActionLink("Access Record", "Index", "AccessRecords")</li>
+                            @*<li>
+                                    <a href="@Url.Content("~/Report/WebForm1.aspx")">Report web</a>
+                                </li>*@
+                            <li role="presentation" class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    Report <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Access Record", "AccessRecord", "Reports")  </li>
+                                    <li>@Html.ActionLink("Person Wise", "PersonWise", "Reports")</li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("Device", "Index", "Devices")</li>
+                            <li>@Html.ActionLink("Visitor", "Index", "Staffs")</li>
+                            <li>@Html.ActionLink("Access Record", "Index", "AccessRecords")</li>
+
+                            <li role="presentation" class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                    Report <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Access Record", "AccessRecord", "Reports")</li>
+                                    <li>@Html.ActionLink("Person Wise", "PersonWise", "Reports")</li>
+                                </ul>
+                            </li>
+                        }
                     }
                 </ul>
                 @Html.Partial("_LoginPartial")

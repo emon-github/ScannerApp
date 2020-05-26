@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "GenerateQR";
+}
+
+@*@using (Html.BeginForm("GenerateQR", "Devices", FormMethod.Post))
+{
+    <input type="text" name="qrcode" />
+    <input type="submit" value="Generate" />
+}*@
+<hr />
+<div id="printableArea">
+    @if (ViewBag.QRCodeImage != null)
+    {
+        <img src="@ViewBag.QRCodeImage" alt="" style="height:150px;width:150px" />
+    }
+    </div>
+<input type="button" onclick="printDiv('printableArea')" value="Print QR!"  class="btn-success"/>
+
+    <script>
+        function printDiv(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        }
+    </script>
+
