@@ -9,7 +9,7 @@ namespace ScannerApp.Models
 {
     public class Registration
     {
-        public int ID { get; set; }
+        public string ID { get; set; }
         [Display(Name = "Name")]
         [Required]
         public string Name { get; set; }

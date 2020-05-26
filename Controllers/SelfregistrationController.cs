@@ -26,17 +26,22 @@ namespace ScannerApp.Controllers
         [HttpPost]
         public async Task<ActionResult> Index([Bind(Include = "ID,Name,Phone,Gender")] Registration registration)
         {
-
             try
             {
                 string phone = registration.Phone;
 
+                string token = await GetLoginToken();
+                TempData["_token"] = token;
+
+                String deptId = await GetdeptId(registration.ID, token);
+                TempData["_deptId"] = deptId;
+
                 using (var client = new HttpClient())
                 {
                     var url = "http://175.143.69.73:8085/cloudIntercom/insertPerson";
-                    client.DefaultRequestHeaders.Add("token", "180a7ba4-6334-4626-95d0-47c29e159eca");
+                    client.DefaultRequestHeaders.Add("token", token);
                     var parameters = new Dictionary<string, string> {
-                    { "deptId", "0b4e1d44a85e4512a3a0ee94d1334f86" },
+                    { "deptId", deptId },
                     { "name", registration.Name},
                     { "phone", registration.Phone },
                     { "sex", registration.Gender.ToString() }};
@@ -45,10 +50,9 @@ namespace ScannerApp.Controllers
                     var response = await client.PostAsync(url, encodedContent).ConfigureAwait(false);
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        // Do something with response. Example get content:
                         var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                        string personID = await GetPersonId(registration.Phone);
+                        string personID = await GetPersonId(registration.Phone, token);
                         TempData["personID"] = personID;
                     }
                 }
@@ -57,17 +61,68 @@ namespace ScannerApp.Controllers
             }
             catch (Exception)
             {
-
                 return View();
             }
         }
 
-        private async Task<string> GetPersonId(string phone)
+        private async Task<string> GetdeptId(string sn, string token)
+        {
+            var url = "http://175.143.69.73:8085/cloudIntercom/selectGateEquipByQueryVo";
+            var deptId = "";
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("token", token);
+                var parameters = new Dictionary<string, string> {
+                    { "sn", sn }};
+                var encodedContent = new FormUrlEncodedContent(parameters);
+
+                var response = await client.PostAsync(url, encodedContent).ConfigureAwait(false);
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    dynamic jsData = JsonConvert.DeserializeObject(responseContent);
+                    List<Device> list = jsData.data.list.ToObject<List<Device>>();
+
+                    if (list.Count() > 0)
+                    {
+                        deptId = list.Where(_ => _.sn == sn).SingleOrDefault().deptId;
+                    }
+                }
+
+                return deptId;
+            }
+        }
+
+        private async Task<string> GetLoginToken()
+        {
+            var Loginurl = "http://175.143.69.73:8085/cloudIntercom/login";
+            var token = "";
+            using (var client = new HttpClient())
+            {
+
+                var parameters = new Dictionary<string, string> {
+                    { "userName", "admin" },
+                    { "password", "554206"}};
+                var encodedContent = new FormUrlEncodedContent(parameters);
+
+                var response = await client.PostAsync(Loginurl, encodedContent).ConfigureAwait(false);
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    dynamic data = JsonConvert.DeserializeObject(responseContent);
+                    token = data.token.ToString();
+                }
+
+                return token;
+            }
+        }
+
+        private async Task<string> GetPersonId(string phone, string token)
         {
             string personId = "";
 
             var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("token", "180a7ba4-6334-4626-95d0-47c29e159eca");
+            client.DefaultRequestHeaders.Add("token", token);
             string jsonString = "";
 
             HttpResponseMessage result = await client.GetAsync("http://175.143.69.73:8085/cloudIntercom/selectPersonByQueryVo");
@@ -82,7 +137,6 @@ namespace ScannerApp.Controllers
                 {
                     personId = list.Where(_ => _.phone == phone).SingleOrDefault().id;
                 }
-
             }
 
             return personId;
@@ -97,59 +151,43 @@ namespace ScannerApp.Controllers
         public async Task<ActionResult> UploadPhoto(HttpPostedFileBase file)
         {
             string perId = "";
+            string token = "";
 
             if (TempData["personID"] != null)
             {
                 perId = TempData["personID"].ToString();
             }
 
-           // string path = Server.MapPath("~/App_Data/uploads/");
-            //if (!Directory.Exists(path))
-            //{
-            //    Directory.CreateDirectory(path);
-            //}
-
+            if (TempData["_token"] != null)
+            {
+                token = TempData["_token"].ToString();
+            }
 
             if (file != null)
             {
                 var fileNameExt = Path.GetFileName(file.FileName);
-                //string[] ext = fileNameExt.ToString().Split('.');
-                //string name = string.IsNullOrEmpty(phone) ? ext[0] : phone;
-                //file.SaveAs(Path.Combine(path, name + "." + ext[1]));
 
                 byte[] paramFileStream = new byte[file.ContentLength];
                 file.InputStream.Read(paramFileStream, 0, paramFileStream.Length);
 
-                //ImageConverter _imageConverter = new ImageConverter();
-                //byte[] paramFileStream = (byte[])_imageConverter.ConvertTo(file, typeof(byte[]));
-
-
                 using (var client = new HttpClient())
                 {
                     var url = "http://175.143.69.73:8085/cloudIntercom/insertFaceFile";
-                    client.DefaultRequestHeaders.Add("token", "180a7ba4-6334-4626-95d0-47c29e159eca");
+                    client.DefaultRequestHeaders.Add("token", token);
                     var formContent = new MultipartFormDataContent
                                         {
-                                        // Send form text values here
                                         {new StringContent(perId),"perId"},
                                         {new StringContent("0"),"angle" },
-                                        // Send Image Here
                                         {new StreamContent(new MemoryStream(paramFileStream)),"files",fileNameExt}
                                         };
-                    // var encodedContent = new FormUrlEncodedContent(parameters);
 
                     var response = await client.PostAsync(url, formContent);
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
-                        // Do something with response. Example get content:
                         var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-
-
                     }
                 }
                 return RedirectToAction("Notice");
-
-
             }
             else
             {

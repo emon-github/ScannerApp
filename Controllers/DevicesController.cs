@@ -125,7 +125,7 @@ namespace ScannerApp.Controllers
             }
 
             ViewBag.Client = new SelectList(db.Users.ToList(), "UserName", "UserName", device.client );
-            ViewBag.Default = device.client;
+           // ViewBag.Default = device.client;
             return View(device);
         }
 
