@@ -8,13 +8,16 @@ namespace ScannerApp.Models
 {
     public class AccessRecord
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         [Key]
         public string id { get; set; }
-        [Display(Name ="Time")]
+        [Display(Name = "Time")]
         public DateTime recordTime { get; set; }
         public string passType { get; set; }
         [Display(Name = "Device")]
-        public string sn { get; set; }
+        public string sn { get; set; } 
+
         [Display(Name = "Device Name")]
         public string equipName { get; set; }
         [Display(Name = "Photo")]
@@ -32,5 +35,7 @@ namespace ScannerApp.Models
         public string deptName { get; set; }
         [Display(Name = "Card")]
         public string cardNum { get; set; }
+
+
     }
 }

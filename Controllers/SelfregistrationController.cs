@@ -16,7 +16,7 @@ namespace ScannerApp.Controllers
 {
     public class SelfregistrationController : Controller
     {
-
+        ApplicationDbContext db = new ApplicationDbContext();
 
         public ActionResult Index(string id)
         {
@@ -36,6 +36,8 @@ namespace ScannerApp.Controllers
                 String deptId = await GetdeptId(registration.ID, token);
                 TempData["_deptId"] = deptId;
 
+                Device device = db.Devices.Where(_ => _.sn == registration.ID).SingleOrDefault();
+
                 using (var client = new HttpClient())
                 {
                     var url = "http://175.143.69.73:8085/cloudIntercom/insertPerson";
@@ -44,6 +46,7 @@ namespace ScannerApp.Controllers
                     { "deptId", deptId },
                     { "name", registration.Name},
                     { "phone", registration.Phone },
+                    { "job", device.client },
                     { "sex", registration.Gender.ToString() }};
                     var encodedContent = new FormUrlEncodedContent(parameters);
 

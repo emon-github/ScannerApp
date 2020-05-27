@@ -16,7 +16,7 @@ namespace ScannerApp.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Staffs
-        public ActionResult Index(string currentFilter, string searchString,  int? page)
+        public ActionResult Index(string currentFilter, string searchString, int? page)
         {
 
             if (searchString != null)
@@ -30,9 +30,19 @@ namespace ScannerApp.Controllers
             }
             ViewBag.CurrentFilter = searchString;
 
-            // return View(db.Staffs.Where(_ => !string.IsNullOrEmpty(_.photoUrl)).ToList());
+            string client = User.Identity.Name;
+            List<Staff> list = null;
 
-            List<Staff> list = db.Staffs.Where(_ => !string.IsNullOrEmpty(_.photoUrl)).OrderByDescending(_ => _.photoUrl).ToList();
+            if (User.IsInRole("Admin"))
+            {
+                list = db.Staffs.Where(_ => !string.IsNullOrEmpty(_.photoUrl)).OrderByDescending(_ => _.photoUrl).ToList();
+            }
+            else
+            {
+                list = db.Staffs.Where(_ => _.job == client && !string.IsNullOrEmpty(_.photoUrl)).OrderByDescending(_ => _.photoUrl).ToList();
+            }
+
+
 
             if (!String.IsNullOrEmpty(searchString))
             {

@@ -29,11 +29,29 @@ namespace ScannerApp.Controllers
             }
             ViewBag.CurrentFilter = searchString;
 
-            List<AccessRecord> list = db.AccessRecords.OrderByDescending(_ => _.recordTime).ToList();
+            List<AccessRecord> list = null;
+            string client = User.Identity.Name;
+
+            if (User.IsInRole("Admin"))
+            {
+                list = db.AccessRecords.OrderByDescending(_ => _.recordTime).ToList();
+            }
+            else
+            {
+
+                list = (from d in db.Devices
+                        join acc in db.AccessRecords on d.sn equals acc.sn
+                        where d.client == User.Identity.Name
+                        select acc).ToList();
+
+                // list = db.AccessRecords.OrderByDescending(_ => _.recordTime).ToList();
+            }
+
             if (!String.IsNullOrEmpty(searchString))
             {
                 list = list.Where(s => s.name.ToLower().Contains(searchString)
-                                       || s.phone.ToLower().Contains(searchString)).ToList();
+                                       || s.phone.ToLower().Contains(searchString)
+                                       || s.sn.ToLower().Contains(searchString)).ToList();
             }
 
             int pageSize = 5;

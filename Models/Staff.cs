@@ -32,6 +32,8 @@ namespace ScannerApp.Models
         public string deptId { get; set; }
         [ScaffoldColumn(false)]
         public string personType { get; set; }
+        [Display(Name = "Client")]
+        public string job { get; set; }
 
     }
 }

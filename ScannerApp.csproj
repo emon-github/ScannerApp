@@ -237,6 +237,10 @@
     <Compile Include="Migrations\202005171854307_update-datecolumn.Designer.cs">
       <DependentUpon>202005171854307_update-datecolumn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202005261459007_update-staff.cs" />
+    <Compile Include="Migrations\202005261459007_update-staff.Designer.cs">
+      <DependentUpon>202005261459007_update-staff.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccessRecord.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -261,31 +265,10 @@
     <Compile Include="Report\AccessRecordPage.aspx.designer.cs">
       <DependentUpon>AccessRecordPage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Report\QrCodePage.aspx.cs">
-      <DependentUpon>QrCodePage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\QrCodePage.aspx.designer.cs">
-      <DependentUpon>QrCodePage.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Report\ReportDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ReportDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="Report\WebForm1.aspx.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\WebForm1.aspx.designer.cs">
-      <DependentUpon>WebForm1.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Report\WebForm2.aspx.cs">
-      <DependentUpon>WebForm2.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report\WebForm2.aspx.designer.cs">
-      <DependentUpon>WebForm2.aspx</DependentUpon>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="Startup.cs" />
@@ -302,9 +285,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="Report\PersonWise.aspx" />
     <Content Include="Report\AccessRecordPage.aspx" />
-    <Content Include="Report\QrCodePage.aspx" />
-    <Content Include="Report\WebForm1.aspx" />
-    <Content Include="Report\WebForm2.aspx" />
     <Content Include="Resource\logo_ItInterlight.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -412,9 +392,11 @@
     <EmbeddedResource Include="Migrations\202005171854307_update-datecolumn.resx">
       <DependentUpon>202005171854307_update-datecolumn.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202005261459007_update-staff.resx">
+      <DependentUpon>202005261459007_update-staff.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Report\AccessRecord.rdlc" />
     <EmbeddedResource Include="Report\PersonWise.rdlc" />
-    <EmbeddedResource Include="Report\Report2.rdlc" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

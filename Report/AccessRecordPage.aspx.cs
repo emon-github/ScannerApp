@@ -26,20 +26,35 @@ namespace ScannerApp.Report
 
         private void LoadData()
         {
+            List<AccessRecord> list = null;
+            string client = User.Identity.Name;
+
+            if (User.IsInRole("Admin"))
+            {
+                list = db.AccessRecords.OrderByDescending(_ => _.recordTime).ToList();
+            }
+            else
+            {
+                list = (from d in db.Devices
+                        join acc in db.AccessRecords on d.sn equals acc.sn
+                        where d.client == User.Identity.Name
+                        select acc).ToList();
+            }
+
             DateTime dt = DateTime.Now;
-            List<AccessRecord> data = db.AccessRecords.ToList();
+            //List<AccessRecord> data = db.AccessRecords.ToList();
 
             if (!string.IsNullOrEmpty(txtDate.Text))
             {
                 dt = Convert.ToDateTime(txtDate.Text);
 
-                data = data.Where(_ => _.recordTime.Date == dt.Date).ToList();
+                list = list.Where(_ => _.recordTime.Date == dt.Date).ToList();
             }
 
             ReportViewer1.LocalReport.DataSources.Clear();
             var reportDataSource1 = new Microsoft.Reporting.WebForms.ReportDataSource();
             reportDataSource1.Name = "DataSet1";
-            reportDataSource1.Value = data.OrderByDescending(_ => _.recordTime);
+            reportDataSource1.Value = list.OrderByDescending(_ => _.recordTime);
             ReportViewer1.LocalReport.DataSources.Add(reportDataSource1);
             ReportViewer1.LocalReport.ReportPath = "Report/AccessRecord.rdlc";
             ReportViewer1.LocalReport.Refresh();

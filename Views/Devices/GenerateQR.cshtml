@@ -4,29 +4,39 @@
 }
 
 @*@using (Html.BeginForm("GenerateQR", "Devices", FormMethod.Post))
-{
-    <input type="text" name="qrcode" />
-    <input type="submit" value="Generate" />
-}*@
+    {
+        <input type="text" name="qrcode" />
+        <input type="submit" value="Generate" />
+    }*@
 <hr />
-<div id="printableArea">
+<div id="printableArea" style="padding:10px;">
     @if (ViewBag.QRCodeImage != null)
     {
         <img src="@ViewBag.QRCodeImage" alt="" style="height:150px;width:150px" />
     }
-    </div>
-<input type="button" onclick="printDiv('printableArea')" value="Print QR!"  class="btn-success"/>
+    <br />
+    <br />
 
-    <script>
-        function printDiv(divName) {
-            var printContents = document.getElementById(divName).innerHTML;
-            var originalContents = document.body.innerHTML;
+    <p>1) Please scan QR code by your mobile phone and fill up the registration form.</p>
+    <p>2) Take selfy / select photo and upload to complete registration form.</p>
+</div>
+<div style="padding:10px;">
+    <input type="button" onclick="printDiv('printableArea')" value="Print QR!" class="btn btn-success" />
+</div>
+<div style="padding:10px;">
+    @Html.ActionLink("Back to List", "Index")
+</div>
 
-            document.body.innerHTML = printContents;
+<script>
+    function printDiv(divName) {
+        var printContents = document.getElementById(divName).innerHTML;
+        var originalContents = document.body.innerHTML;
 
-            window.print();
+        document.body.innerHTML = printContents;
 
-            document.body.innerHTML = originalContents;
-        }
-    </script>
+        window.print();
+
+        document.body.innerHTML = originalContents;
+    }
+</script>
 

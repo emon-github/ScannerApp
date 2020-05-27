@@ -22,35 +22,32 @@ namespace ScannerApp.Controllers
         // GET: Devices
         public ActionResult Index(int? page)
         {
-            //string url = Url.Content("~/");
-            //string uri1 = Request.Url.GetLeftPart(UriPartial.Authority) + Url.Content("~");
+            string client = User.Identity.Name;
+            List<Device> list = null;
 
-            List<Device> list = db.Devices.ToList();
+            if (User.IsInRole("Admin"))
+            {
+                list = db.Devices.ToList();
+            }
+            else
+            {
+                list = db.Devices.Where(_ => _.client == client).ToList();
+            }
 
-            //return View(db.Devices.ToList());
-             int pageSize = 5;
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
-            return View(list.ToPagedList(pageNumber, pageSize));  
+            return View(list.ToPagedList(pageNumber, pageSize));
         }
-
-        //[HttpGet]
-        //public ActionResult GenerateQR()
-        //{
-        //    string url = Url.Content("~/");
-        //    string uri1 = Request.Url.GetLeftPart(UriPartial.Authority) + Url.Content("~");
-
-        //    return View();
-        //}
         
         public ActionResult GenerateQR(string sn)
         {
-            
+
             string uri1 = Request.Url.GetLeftPart(UriPartial.Authority) + Url.Content("~");
             string qr = uri1 + "/Selfregistration?id=" + sn;
 
             using (MemoryStream ms = new MemoryStream())
             {
-                QRCodeGenerator qrGenerator = new QRCodeGenerator();               
+                QRCodeGenerator qrGenerator = new QRCodeGenerator();
                 QRCodeData data = qrGenerator.CreateQrCode(qr, QRCodeGenerator.ECCLevel.Q);
                 QRCode qrCode = new QRCoder.QRCode(data);
 
@@ -124,8 +121,8 @@ namespace ScannerApp.Controllers
                 device.client = "";
             }
 
-            ViewBag.Client = new SelectList(db.Users.ToList(), "UserName", "UserName", device.client );
-           // ViewBag.Default = device.client;
+            ViewBag.Client = new SelectList(db.Users.ToList(), "UserName", "UserName", device.client);
+            // ViewBag.Default = device.client;
             return View(device);
         }
 
