@@ -40,10 +40,29 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-warning" />
+                <p> @Html.CheckBox("Condition", false, new { @id = "chkcondition" }) I accept the <a href="#"><u>Terms and Conditions</u></a></p>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-warning" onclick="javascript:return AcceptTermAndcondition();" />
             </div>
         </div>
     </div>
 }
+
+<script language="javascript" type="text/javascript">
+    function AcceptTermAndcondition() {
+
+        if ($("#chkcondition").is(':checked')) {
+            return true;
+        }
+        else {
+            alert("Please accept terms and conditions");
+            return false;
+        }
+    }
+</script>
 
 

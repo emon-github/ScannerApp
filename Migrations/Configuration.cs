@@ -31,7 +31,7 @@ namespace ScannerApp.Migrations
                 //Here we create a Admin super user who will maintain the website                   
 
                 var user = new ApplicationUser();
-                user.UserName = "Admin";
+                user.UserName = "admin@email.com";
                 user.Email = "admin@email.com";
 
                 string userPWD = "Admin@123";

@@ -285,6 +285,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Report\PersonWise.aspx" />
     <Content Include="Report\AccessRecordPage.aspx" />
+    <Content Include="Resource\avater.jpg" />
     <Content Include="Resource\logo_ItInterlight.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -292,6 +293,7 @@
     <Content Include="Report\ReportDataSet.xsc">
       <DependentUpon>ReportDataSet.xsd</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\tscanner - Web Deploy.pubxml" />
     <None Include="Report\ReportDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -381,6 +383,7 @@
     <Content Include="Views\Reports\AccessRecord.cshtml" />
     <Content Include="Views\Reports\PersonWise.cshtml" />
     <Content Include="Views\Devices\GenerateQR.cshtml" />
+    <Content Include="Views\Selfregistration\UploadResizePhoto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202005082021448_initial-create.resx">
@@ -395,8 +398,12 @@
     <EmbeddedResource Include="Migrations\202005261459007_update-staff.resx">
       <DependentUpon>202005261459007_update-staff.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Report\AccessRecord.rdlc" />
-    <EmbeddedResource Include="Report\PersonWise.rdlc" />
+    <Content Include="Report\AccessRecord.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Report\PersonWise.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

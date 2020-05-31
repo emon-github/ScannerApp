@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewBag.Title = "UploadResizePhoto";
+}
+
+<script src="https://cdn.jsdelivr.net/npm/screw-filereader@1.4.3/index.min.js"></script>
+
+<form method="post" enctype="multipart/form-data">
+    <input type="file" id="fileInput" name="image" accept="image/*" capture="camera" />
+    <canvas class="canvas" id="can"></canvas>
+    <input type="submit" name="do" value="submit" />
+</form>
+
+<script>
+    var canvasI = document.getElementById("can"),
+        ctx = canvas.getContext("2d");
+
+    canvasI.width = 300;
+    canvasI.height = 414;
+
+    var background = new Image();
+    background.src = "../Resource/avater.jpg";
+
+    background.onload = function () {
+        ctx.drawImage(background, 0, 0);
+    }
+
+    // Used for creating a new FileList in a round-about way
+    function FileListItem(a) {
+        a = [].slice.call(Array.isArray(a) ? a : arguments)
+        for (var c, b = c = a.length, d = !0; b-- && d;) d = a[b] instanceof File
+        if (!d) throw new TypeError("expected argument to FileList is File or array of File objects")
+        for (b = (new ClipboardEvent("")).clipboardData || new DataTransfer; c--;) b.items.add(a[c])
+        return b.files
+    }
+
+    fileInput.onchange = async function change() {
+        const maxWidth = 350
+        const maxHeight = 500
+        const result = []
+
+        for (const file of this.files) {
+            const canvas = document.getElementById('can')
+            // const canvas = document.createElement('canvas')
+            const ctx = canvas.getContext('2d')
+            const img = await file.image()
+
+            // native alternetive way (don't take care of exif rotation)
+            // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/createImageBitmap
+            // const img = await createImageBitmap(file)
+
+            // calculate new size
+            const ratio = Math.min(maxWidth / img.width, maxHeight / img.height)
+            const width = img.width * ratio + .5 | 0
+            const height = img.height * ratio + .5 | 0
+
+            // resize the canvas to the new dimensions
+            canvas.width = width
+            canvas.height = height
+
+            // scale & draw the image onto the canvas
+            ctx.drawImage(img, 0, 0, width, height)
+
+            // just to preview
+            // document.body.appendChild(canvas)
+
+            // Get the binary (aka blob)
+            const blob = await new Promise(rs => canvas.toBlob(rs, 1))
+            const resizedFile = new File([blob], file.name, file)
+            result.push(resizedFile)
+        }
+
+        const fileList = new FileListItem(result)
+
+        // temporary remove event listener since
+        // assigning a new filelist to the input
+        // will trigger a new change event...
+        fileInput.onchange = null
+        fileInput.files = fileList
+        fileInput.onchange = change
+    }
+</script>
+

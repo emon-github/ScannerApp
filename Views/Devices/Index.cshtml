@@ -55,7 +55,7 @@
                 @Html.DisplayFor(modelItem => item.client)
             </td>
             <td>
-                <a href="@Url.Action("GenerateQR", "Devices")" class="btn btn-info btn-xs" data-toggle="tooltip" title="View QR">
+                <a href="@Url.Action("GenerateQR", "Devices",new { sn = item.sn })" class="btn btn-info btn-xs" data-toggle="tooltip" title="View QR">
                     <span class="glyphicon glyphicon-qrcode" aria-hidden="true"></span>
                 </a>
                 @*@Html.ActionLink("QR", "GenerateQR", new { sn = item.sn }, new { @class = "glyphicon glyphicon-log-in" }) |*@

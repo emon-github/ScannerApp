@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -28,39 +29,46 @@ namespace ScannerApp.Controllers
         {
             try
             {
-                string phone = registration.Phone;
+               
 
-                string token = await GetLoginToken();
-                TempData["_token"] = token;
-
-                String deptId = await GetdeptId(registration.ID, token);
-                TempData["_deptId"] = deptId;
-
-                Device device = db.Devices.Where(_ => _.sn == registration.ID).SingleOrDefault();
-
-                using (var client = new HttpClient())
+                if (ModelState.IsValid)
                 {
-                    var url = "http://175.143.69.73:8085/cloudIntercom/insertPerson";
-                    client.DefaultRequestHeaders.Add("token", token);
-                    var parameters = new Dictionary<string, string> {
+
+                    string phone = registration.Phone;
+
+                    string token = await GetLoginToken();
+                    TempData["_token"] = token;
+
+                    String deptId = await GetdeptId(registration.ID, token);
+                    TempData["_deptId"] = deptId;
+
+                    Device device = db.Devices.Where(_ => _.sn == registration.ID).SingleOrDefault();
+
+                    using (var client = new HttpClient())
+                    {
+                        var url = "http://175.143.69.73:8085/cloudIntercom/insertPerson";
+                        client.DefaultRequestHeaders.Add("token", token);
+                        var parameters = new Dictionary<string, string> {
                     { "deptId", deptId },
                     { "name", registration.Name},
                     { "phone", registration.Phone },
                     { "job", device.client },
                     { "sex", registration.Gender.ToString() }};
-                    var encodedContent = new FormUrlEncodedContent(parameters);
+                        var encodedContent = new FormUrlEncodedContent(parameters);
 
-                    var response = await client.PostAsync(url, encodedContent).ConfigureAwait(false);
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                        var response = await client.PostAsync(url, encodedContent).ConfigureAwait(false);
+                        if (response.StatusCode == HttpStatusCode.OK)
+                        {
+                            var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                        string personID = await GetPersonId(registration.Phone, token);
-                        TempData["personID"] = personID;
+                            string personID = await GetPersonId(registration.Phone, token);
+                            TempData["personID"] = personID;
+                        }
                     }
-                }
 
-                return RedirectToAction("UploadPhoto");
+                    return RedirectToAction("UploadPhoto");
+                }
+                return View();
             }
             catch (Exception)
             {
@@ -150,11 +158,82 @@ namespace ScannerApp.Controllers
             return View();
         }
 
+
+        //[HttpPost]
+        //public async Task<ActionResult> UploadPhoto1()
+        //{
+           
+        //        var data = Request.Form;
+        //        byte[] valor1 = Encoding.ASCII.GetBytes(data["image"].ToString());
+            
+
+        //    return View();
+        //}
+
         [HttpPost]
         public async Task<ActionResult> UploadPhoto(HttpPostedFileBase file)
         {
             string perId = "";
             string token = "";
+
+            if (TempData["personID"] != null)
+            {
+                perId = TempData["personID"].ToString();
+            }
+
+            if (TempData["_token"] != null)
+            {
+                token = TempData["_token"].ToString();
+            }
+
+            if (file != null)
+            {
+                var fileNameExt = Path.GetFileName(file.FileName);
+
+                byte[] paramFileStream = new byte[file.ContentLength];
+                file.InputStream.Read(paramFileStream, 0, paramFileStream.Length);
+
+                using (var client = new HttpClient())
+                {
+                    var url = "http://175.143.69.73:8085/cloudIntercom/insertFaceFile";
+                    client.DefaultRequestHeaders.Add("token", token);
+                    var formContent = new MultipartFormDataContent
+                                        {
+                                        {new StringContent(perId),"perId"},
+                                        {new StringContent("0"),"angle" },
+                                        {new StreamContent(new MemoryStream(paramFileStream)),"files",fileNameExt}
+                                        };
+
+                    var response = await client.PostAsync(url, formContent);
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    }
+                }
+                return RedirectToAction("Notice");
+            }
+            else
+            {
+                ViewBag.Message = "Please Select any file";
+                return View();
+            }
+        }
+
+
+        public ActionResult UploadResizePhoto()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UploadResizePhoto(int? id )
+        {
+            string perId = "";
+            string token = "";
+
+            HttpPostedFileBase file = Request.Files[0];
+           //string str = fileUpload.FileName;
+           
 
             if (TempData["personID"] != null)
             {

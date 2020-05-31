@@ -15,6 +15,7 @@ namespace ScannerApp.Models
         public string Name { get; set; }
         [Display(Name = "Phone")]
         [Required]
+        [RegularExpression(@"^\d{10,11}$", ErrorMessage = "Invalid Mobile Number.")]
         public string Phone { get; set; }
 
         [Display(Name = "Gender")]        
