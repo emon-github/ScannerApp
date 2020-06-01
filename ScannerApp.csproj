@@ -384,6 +384,7 @@
     <Content Include="Views\Reports\PersonWise.cshtml" />
     <Content Include="Views\Devices\GenerateQR.cshtml" />
     <Content Include="Views\Selfregistration\UploadResizePhoto.cshtml" />
+    <Content Include="Views\Selfregistration\UploadSelfy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202005082021448_initial-create.resx">

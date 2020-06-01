@@ -47,7 +47,8 @@ namespace ScannerApp.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 list = list.Where(s => s.name.ToLower().Contains(searchString)
-                                       || s.phone.ToLower().Contains(searchString)).ToList();
+                                       || s.phone.ToLower().Contains(searchString)
+                                       || s.deptName.ToLower().Contains(searchString)).ToList();
             }
 
             int pageSize = 5;

@@ -66,7 +66,7 @@ namespace ScannerApp.Controllers
                         }
                     }
 
-                    return RedirectToAction("UploadPhoto");
+                    return RedirectToAction("UploadSelfy");
                 }
                 return View();
             }
@@ -158,7 +158,6 @@ namespace ScannerApp.Controllers
             return View();
         }
 
-
         //[HttpPost]
         //public async Task<ActionResult> UploadPhoto1()
         //{
@@ -218,6 +217,66 @@ namespace ScannerApp.Controllers
                 return View();
             }
         }
+
+
+        public ActionResult UploadSelfy()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> UploadSelfy(int? id)
+        {
+            string perId = "";
+            string token = "";
+
+            HttpPostedFileBase file = Request.Files[0];
+            //string str = fileUpload.FileName;
+
+
+            if (TempData["personID"] != null)
+            {
+                perId = TempData["personID"].ToString();
+            }
+
+            if (TempData["_token"] != null)
+            {
+                token = TempData["_token"].ToString();
+            }
+
+            if (file != null)
+            {
+                var fileNameExt = Path.GetFileName(file.FileName);
+
+                byte[] paramFileStream = new byte[file.ContentLength];
+                file.InputStream.Read(paramFileStream, 0, paramFileStream.Length);
+
+                using (var client = new HttpClient())
+                {
+                    var url = "http://175.143.69.73:8085/cloudIntercom/insertFaceFile";
+                    client.DefaultRequestHeaders.Add("token", token);
+                    var formContent = new MultipartFormDataContent
+                                        {
+                                        {new StringContent(perId),"perId"},
+                                        {new StringContent("0"),"angle" },
+                                        {new StreamContent(new MemoryStream(paramFileStream)),"files",fileNameExt}
+                                        };
+
+                    var response = await client.PostAsync(url, formContent);
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                    }
+                }
+                return RedirectToAction("Notice");
+            }
+            else
+            {
+                ViewBag.Message = "Please Select any file";
+                return View();
+            }
+        }
+
 
 
         public ActionResult UploadResizePhoto()
