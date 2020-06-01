@@ -1,9 +1,12 @@
-﻿using PagedList;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using PagedList;
 using ScannerApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -12,6 +15,8 @@ namespace ScannerApp.Controllers
     public class UserListController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+
 
         // GET: UserList
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
@@ -49,9 +54,9 @@ namespace ScannerApp.Controllers
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                list = list.Where(s => s.UserName.ToLower().Contains(searchString)  
-                                       || s.Phone.ToLower().Contains(searchString) 
-                                       || s.Role.ToLower().Contains(searchString) ).ToList();
+                list = list.Where(s => s.UserName.ToLower().Contains(searchString)
+                                       || s.Phone.ToLower().Contains(searchString)
+                                       || s.Role.ToLower().Contains(searchString)).ToList();
             }
 
 
@@ -73,7 +78,7 @@ namespace ScannerApp.Controllers
 
             int pageSize = 5;
             int pageNumber = (page ?? 1);
-            return View(list.ToPagedList(pageNumber, pageSize));            
+            return View(list.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: UserList/Details/5
@@ -105,20 +110,56 @@ namespace ScannerApp.Controllers
         }
 
         // GET: UserList/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
-            return View();
+            if (string.IsNullOrEmpty(id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var obj = (from user in db.Users
+                       from userRole in user.Roles
+                       join role in db.Roles on
+                       userRole.RoleId equals role.Id
+                       where user.Id == id
+                       select new UserListViewModel()
+                       {
+                           UserID = user.Id,
+                           UserName = user.UserName,
+                           Email = user.Email,
+                           Phone = user.PhoneNumber,
+                           Role = role.Name
+                       }).SingleOrDefault();
+
+            if (obj == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.Role = new SelectList(db.Roles.ToList(), "Name", "Name", obj.Role);
+
+            return View(obj);
         }
 
         // POST: UserList/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit([Bind(Include = "UserID,UserName,Email,Phone,Role")] UserListViewModel obj)
         {
             try
             {
-                // TODO: Add update logic here
+                if (ModelState.IsValid)
+                {                   
+                    var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
 
-                return RedirectToAction("Index");
+                    var user = UserManager.FindById(obj.UserID);
+                    user.PhoneNumber = obj.Phone;
+                    UserManager.RemoveFromRoles(obj.UserID, UserManager.GetRoles(obj.UserID).ToArray());
+                    UserManager.AddToRole(obj.UserID, obj.Role);
+                    UserManager.Update(user);
+
+                    return RedirectToAction("Index");
+                }
+                return View(obj);
             }
             catch
             {
@@ -127,20 +168,51 @@ namespace ScannerApp.Controllers
         }
 
         // GET: UserList/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(string id)
         {
-            return View();
+            if (string.IsNullOrEmpty(id))
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var obj = (from user in db.Users
+                       from userRole in user.Roles
+                       join role in db.Roles on
+                       userRole.RoleId equals role.Id
+                       where user.Id == id
+                       select new UserListViewModel()
+                       {
+                           UserID = user.Id,
+                           UserName = user.UserName,
+                           Email = user.Email,
+                           Phone = user.PhoneNumber,
+                           Role = role.Name
+                       }).SingleOrDefault();
+
+            if (obj == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.Role = new SelectList(db.Roles.ToList(), "Name", "Name", obj.Role);
+
+            return View(obj);
         }
 
-        // POST: UserList/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(string id)
+        {            
             try
-            {
-                // TODO: Add delete logic here
+            {               
+                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
 
-                return RedirectToAction("Index");
+                var user = UserManager.FindById(id);                
+                UserManager.RemoveFromRoles(id, UserManager.GetRoles(id).ToArray());
+                 
+                UserManager.Delete(user);
+
+                return RedirectToAction("Index");                
             }
             catch
             {

@@ -116,6 +116,7 @@ namespace ScannerApp.Models
 
     public class UserListViewModel
     {
+        [Key]
         public string UserID { get; set; }
         [Display(Name = "User Name")]
         public string UserName { get; set; }

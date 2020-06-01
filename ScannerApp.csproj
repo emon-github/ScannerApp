@@ -385,6 +385,8 @@
     <Content Include="Views\Devices\GenerateQR.cshtml" />
     <Content Include="Views\Selfregistration\UploadResizePhoto.cshtml" />
     <Content Include="Views\Selfregistration\UploadSelfy.cshtml" />
+    <Content Include="Views\UserList\Edit.cshtml" />
+    <Content Include="Views\UserList\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202005082021448_initial-create.resx">

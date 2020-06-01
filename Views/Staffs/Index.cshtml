@@ -50,11 +50,12 @@
                 @Html.DisplayFor(modelItem => item.deptName)
             </td>
             <td>
-
-
-
                 <a href="@Url.Action("Details", "Staffs",new { id = item.perId })" class="btn btn-info" data-toggle="tooltip" title="Details">
                     <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                </a>
+
+                 <a href="@Url.Action("Delete", "Staffs",new { id = item.perId })" class="btn btn-danger" data-toggle="tooltip" title="Delete">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                 </a>
 
             </td>

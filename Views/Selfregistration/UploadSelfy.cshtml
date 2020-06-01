@@ -63,14 +63,14 @@
     }
 
     fileInput.onchange = async function change() {
-        document.getElementById('progress').innerHTML = 'Uploading... 10%';
+        document.getElementById('progress').innerHTML = 'Loading... 10%';
         const maxWidth = 300
         const maxHeight = 500
         const result = []
 
         for (const file of this.files) {
 
-            document.getElementById('progress').innerHTML = 'Uploading...' + randomNumber(40, 80) + '%';
+            document.getElementById('progress').innerHTML = 'Loading...' + randomNumber(40, 80) + '%';
             const canvas = document.getElementById('can')
             // const canvas = document.createElement('canvas')
             const ctx = canvas.getContext('2d')

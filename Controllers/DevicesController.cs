@@ -62,8 +62,6 @@ namespace ScannerApp.Controllers
         }
 
 
-
-
         // GET: Devices/Details/5
         public ActionResult Details(string id)
         {
