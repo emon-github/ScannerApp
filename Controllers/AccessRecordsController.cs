@@ -42,7 +42,7 @@ namespace ScannerApp.Controllers
                 list = (from d in db.Devices
                         join acc in db.AccessRecords on d.sn equals acc.sn
                         where d.client == User.Identity.Name
-                        select acc).ToList();
+                        select acc).OrderByDescending(_ => _.recordTime).ToList();
 
                 // list = db.AccessRecords.OrderByDescending(_ => _.recordTime).ToList();
             }

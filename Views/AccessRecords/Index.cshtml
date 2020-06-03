@@ -11,10 +11,15 @@
 
 @using (Html.BeginForm())
 {
-    <p>
+    <p style="float:left">
         Search: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
         <input type="submit" value="Search" />
     </p>
+    
+        <p style="float:right; color:red;">
+            Temp >= 37.5 are red.
+        </p>
+   
 }
 
 <table class="table">
@@ -51,7 +56,9 @@
 
     @foreach (var item in Model)
     {
-        <tr>
+        string name = item.name == "" ? "Stranger" : item.name;
+
+        <tr style='color: @( Convert.ToDecimal( item.temperature.Substring(0,4)) >= Convert.ToDecimal( 37.5 )? "red" : "black");'>
             <td>
                 @Html.DisplayFor(modelItem => item.recordTime)
             </td>
@@ -66,9 +73,8 @@
                 @*@Html.DisplayFor(modelItem => item.photoUrl)*@
                 <img src="http://175.143.69.73:8085/@Url.Content( item.photoUrl)" height="50" alt="Image" />
             </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.name)
+            <td style='color:@(name == "Stranger"? "blue": "black") '>             
+                @Html.DisplayFor(modelItem => name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.phone)

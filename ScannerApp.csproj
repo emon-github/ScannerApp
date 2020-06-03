@@ -293,6 +293,7 @@
     <Content Include="Report\ReportDataSet.xsc">
       <DependentUpon>ReportDataSet.xsd</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\tscan - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\tscanner - Web Deploy.pubxml" />
     <None Include="Report\ReportDataSet.xsd">
       <SubType>Designer</SubType>
