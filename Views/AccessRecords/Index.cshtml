@@ -15,11 +15,11 @@
         Search: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
         <input type="submit" value="Search" />
     </p>
-    
-        <p style="float:right; color:red;">
-            Temp >= 37.5 are red.
-        </p>
-   
+
+    <p style="float:right; color:red;">
+        Temp >= 37.5 are red.
+    </p>
+
 }
 
 <table class="table">
@@ -73,9 +73,12 @@
                 @*@Html.DisplayFor(modelItem => item.photoUrl)*@
                 <img src="http://175.143.69.73:8085/@Url.Content( item.photoUrl)" height="50" alt="Image" />
             </td>
-            <td style='color:@(name == "Stranger"? "blue": "black") '>             
+            <td style='color:@(name == "Stranger"? "blue": "black")'>
                 @Html.DisplayFor(modelItem => name)
             </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.name)
+                </td>*@
             <td>
                 @Html.DisplayFor(modelItem => item.phone)
             </td>

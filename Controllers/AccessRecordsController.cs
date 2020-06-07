@@ -34,14 +34,14 @@ namespace ScannerApp.Controllers
 
             if (User.IsInRole("Admin"))
             {
-                list = db.AccessRecords.OrderByDescending(_ => _.recordTime).ToList();
+                list = db.AccessRecords.Where(_ => !string.IsNullOrEmpty( _.temperature )).OrderByDescending(_ => _.recordTime).ToList();
             }
             else
             {
 
                 list = (from d in db.Devices
                         join acc in db.AccessRecords on d.sn equals acc.sn
-                        where d.client == User.Identity.Name
+                        where d.client == User.Identity.Name && !string.IsNullOrEmpty(acc.temperature )
                         select acc).OrderByDescending(_ => _.recordTime).ToList();
 
                 // list = db.AccessRecords.OrderByDescending(_ => _.recordTime).ToList();

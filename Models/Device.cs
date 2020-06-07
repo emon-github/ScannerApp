@@ -53,5 +53,10 @@ namespace ScannerApp.Models
 
         [Display(Name = "Client")]
         public string client { get; set; }
+
+        [Display(Name = "Online")]
+        public string onlineStatus { get; set; }
+
+
     }
 }

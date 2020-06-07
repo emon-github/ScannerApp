@@ -34,6 +34,7 @@ namespace ScannerApp.Models
         public string personType { get; set; }
         [Display(Name = "Client")]
         public string job { get; set; }
+        public DateTime ORDER_BY_DERIVED_0 { get; set; }
 
     }
 }

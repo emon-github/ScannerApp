@@ -3,22 +3,17 @@
     ViewBag.Title = "GenerateQR";
 }
 
-@*@using (Html.BeginForm("GenerateQR", "Devices", FormMethod.Post))
-    {
-        <input type="text" name="qrcode" />
-        <input type="submit" value="Generate" />
-    }*@
 <hr />
 <div id="printableArea" style="padding:10px;">
     @if (ViewBag.QRCodeImage != null)
     {
-        <img src="@ViewBag.QRCodeImage" alt="" style="height:150px;width:150px" />
+        <img src="@ViewBag.QRCodeImage" alt="" style="height:200px;width:200px" />
     }
     <br />
     <br />
-
-    <p>1) Please scan QR code by your mobile phone and fill up the registration form.</p>
-    <p>2) Take selfy / select photo and upload to complete registration form.</p>
+    <h3>1) Please scan the QR code by your mobile phone and fill up the registration form.</h3>
+    <h3>2) Take selfie / select photo to complete registration.</h3>
+    <hr />
 </div>
 <div style="padding:10px;">
     <input type="button" onclick="printDiv('printableArea')" value="Print QR!" class="btn btn-success" />

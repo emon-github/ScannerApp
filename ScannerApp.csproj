@@ -241,6 +241,14 @@
     <Compile Include="Migrations\202005261459007_update-staff.Designer.cs">
       <DependentUpon>202005261459007_update-staff.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006030412582_update-device-onlinestatus.cs" />
+    <Compile Include="Migrations\202006030412582_update-device-onlinestatus.Designer.cs">
+      <DependentUpon>202006030412582_update-device-onlinestatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202006040602466_add-ordrby-in-staff.cs" />
+    <Compile Include="Migrations\202006040602466_add-ordrby-in-staff.Designer.cs">
+      <DependentUpon>202006040602466_add-ordrby-in-staff.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccessRecord.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -286,9 +294,11 @@
     <Content Include="Report\PersonWise.aspx" />
     <Content Include="Report\AccessRecordPage.aspx" />
     <Content Include="Resource\avater.jpg" />
+    <Content Include="Resource\loading.gif" />
     <Content Include="Resource\logo_ItInterlight.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\demo-tscan - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <Content Include="Report\ReportDataSet.xsc">
       <DependentUpon>ReportDataSet.xsd</DependentUpon>
@@ -327,6 +337,7 @@
     <Content Include="SqlServerTypes\x86\SqlServerSpatial140.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="TermsAndConditions.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -384,10 +395,10 @@
     <Content Include="Views\Reports\AccessRecord.cshtml" />
     <Content Include="Views\Reports\PersonWise.cshtml" />
     <Content Include="Views\Devices\GenerateQR.cshtml" />
-    <Content Include="Views\Selfregistration\UploadResizePhoto.cshtml" />
     <Content Include="Views\Selfregistration\UploadSelfy.cshtml" />
     <Content Include="Views\UserList\Edit.cshtml" />
     <Content Include="Views\UserList\Delete.cshtml" />
+    <Content Include="Views\Selfregistration\UploadSelfie.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202005082021448_initial-create.resx">
@@ -408,6 +419,12 @@
     <Content Include="Report\PersonWise.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Migrations\202006030412582_update-device-onlinestatus.resx">
+      <DependentUpon>202006030412582_update-device-onlinestatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006040602466_add-ordrby-in-staff.resx">
+      <DependentUpon>202006040602466_add-ordrby-in-staff.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -424,6 +441,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\uploads\" />
+    <Folder Include="Uploads\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

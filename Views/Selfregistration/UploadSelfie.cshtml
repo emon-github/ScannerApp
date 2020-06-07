@@ -1,0 +1,177 @@
+﻿@*<form id="uploadImageForm" enctype="multipart/form-data">*@
+<h2> Photo</h2>
+<label class="custom-file-label" for="takePictureField" style="color:blue"> Please choose a file or take a selfie</label>
+<input name="imagefile[]" multiple class="custom-file-input form-control" type="file" id="takePictureField" accept="image/*" onchange="uploadPhotos('UploadSelfyDemo')" />
+<div style="text-align:center; padding:10px; display:none" id="loadingdiv">
+    <img src="~/Resource/loading.gif" />
+</div>
+<div style="text-align:center; padding:10px;" id="candiv">
+    <label for="takePictureField">
+        <canvas class="canvas" id="can"></canvas>
+    </label>
+</div>
+@*</form>*@
+<script src="~/Scripts/jquery-3.4.1.js"></script>
+<script>
+    var canvasI = document.getElementById("can"),
+        ctx = canvasI.getContext("2d");
+    canvasI.width = 220;
+    canvasI.height = 220;
+    var background = new Image();
+    background.src = "../Resource/avater.jpg";
+    background.onload = function () {
+        ctx.drawImage(background, 0, 0);
+    }
+    //==============
+    window.uploadPhotos = function (url) {
+
+        try {
+
+        $("#candiv").hide();
+        $("#loadingdiv").show();
+        // Read in file
+        var file = event.target.files[0];
+
+        // Ensure it's an image
+        if (file.type.match(/image.*/)) {
+            console.log('An image has been loaded');
+
+            // Load the image
+            var reader = new FileReader();
+            reader.onload = function (readerEvent) {
+                var image = new Image();
+                image.onload = function (imageEvent) {
+
+                    // Resize the image
+                    var canvas = document.createElement('canvas');
+                    var MAX_WIDTH = 600;
+                    var MAX_HEIGHT = 800;
+                    var width = image.width;
+                    var height = image.height;
+
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+                    //    max_size = 550,// TODO : pull max size from a site config
+                    //    width = image.width,
+                    //    height = image.height;
+                    //if (width < height) {
+                    //    if (width > max_size) {
+                    //        height *= max_size / width;
+                    //        width = max_size;
+                    //    }
+                    //} else {
+                    //    if (height > max_size) {
+                    //        width *= max_size / height;
+                    //        height = max_size;
+                    //    }
+                    //}
+                    canvas.width = width;
+                    canvas.height = height;
+                    canvas.getContext('2d').drawImage(image, 0, 0, width, height);
+                    var dataUrl = canvas.toDataURL('image/jpeg');
+                    var resizedImage = dataURLToBlob(dataUrl);
+
+                    //var blobBin = atob(dataUrl.split(',')[1]);
+                    //var array = [];
+                    //for (var i = 0; i < blobBin.length; i++) {
+                    //    array.push(blobBin.charCodeAt(i));
+                    //}
+                    //var file1 = new Blob([new Uint8Array(array)], { type: 'image/png', name: "avatar.png" });
+
+
+                    //$.event.trigger({
+                    //    type: "imageResized",
+                    //    blob: resizedImage,
+                    //    url: dataUrl
+                    //});
+
+                    var fd = new FormData(document.forms[0]);
+                   // fd.append('image_data', resizedImage);
+                    fd.append("image", resizedImage);
+
+                     $.ajax({
+                        url: '@Url.Action("UploadSelfie", "Selfregistration")',
+                        data: fd,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        type: 'POST',
+                         success: function (data) {
+                           //  alert(data.msg);
+                            window.location.href= '@Url.Action("Notice", "Selfregistration")'
+                         },
+                        error: function () {
+                            alert("Error Message :" + data.msg);
+                        }
+
+                    });
+                }
+                image.src = readerEvent.target.result;
+
+            }
+            reader.readAsDataURL(file);
+            }
+        }
+        catch (err) {
+            alert( "Input is " + err);
+        }
+    };
+
+
+    /* Utility function to convert a canvas to a BLOB */
+    var dataURLToBlob = function (dataURL) {
+        var BASE64_MARKER = ';base64,';
+        if (dataURL.indexOf(BASE64_MARKER) == -1) {
+            var parts = dataURL.split(',');
+            var contentType = parts[0].split(':')[1];
+            var raw = parts[1];
+
+            return new Blob([raw], { type: contentType });
+        }
+
+        var parts = dataURL.split(BASE64_MARKER);
+        var contentType = parts[0].split(':')[1];
+        var raw = window.atob(parts[1]);
+        var rawLength = raw.length;
+
+        var uInt8Array = new Uint8Array(rawLength);
+
+        for (var i = 0; i < rawLength; ++i) {
+            uInt8Array[i] = raw.charCodeAt(i);
+        }
+
+        return new Blob([uInt8Array], { type: contentType });
+    }
+    /* End Utility function to convert a canvas to a BLOB      */
+
+    /* Handle image resized events */
+    @*$(document).on("imageResized", function (event) {
+        alert("event ajax");
+
+        var data = new FormData($("form[id*='uploadImageForm']")[0]);
+        if (event.blob) {
+            data.append('image_data', event.blob);
+
+            $.ajax({
+                url: '@Url.Action("UploadSelfyDemo", "Selfregistration")',
+                data: data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                type: 'POST',
+                success: function (data) {
+                    //handle errors...
+                }
+            });
+        }
+    });*@
+</script>

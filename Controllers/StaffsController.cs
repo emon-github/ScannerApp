@@ -35,11 +35,11 @@ namespace ScannerApp.Controllers
 
             if (User.IsInRole("Admin"))
             {
-                list = db.Staffs.Where(_ => !string.IsNullOrEmpty(_.photoUrl)).OrderByDescending(_ => _.photoUrl).ToList();
+                list = db.Staffs.Where(_ => !string.IsNullOrEmpty(_.photoUrl)).OrderByDescending(_ => _.ORDER_BY_DERIVED_0).ToList();
             }
             else
             {
-                list = db.Staffs.Where(_ => _.job == client && !string.IsNullOrEmpty(_.photoUrl)).OrderByDescending(_ => _.photoUrl).ToList();
+                list = db.Staffs.Where(_ => _.job == client && !string.IsNullOrEmpty(_.photoUrl)).OrderByDescending(_ => _.ORDER_BY_DERIVED_0).ToList();
             }
 
 

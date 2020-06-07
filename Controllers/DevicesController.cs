@@ -34,7 +34,7 @@ namespace ScannerApp.Controllers
                 list = db.Devices.Where(_ => _.client == client).ToList();
             }
 
-            int pageSize = 5;
+            int pageSize = 8;
             int pageNumber = (page ?? 1);
             return View(list.ToPagedList(pageNumber, pageSize));
         }
@@ -133,7 +133,10 @@ namespace ScannerApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(device).State = EntityState.Modified;
+                Device entity = db.Devices.Find(device.id);
+                entity.client = device.client;
+
+                db.Entry(entity).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

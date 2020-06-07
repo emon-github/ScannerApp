@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-sm-10">
 
-                <label class="custom-file-label" for="fileInput"> Please choose a file Or take selfy</label>
+                <label class="custom-file-label" for="fileInput"> Please choose a file or take a selfie and submit</label>
                 <input type="file" multiple class="custom-file-input form-control" name="file" id="fileInput" accept="image/*" capture="camera">
                 <span style="color:red">@Html.Raw(ViewBag.Message)</span>
                 <label id="progress" style="color:red;"></label>
@@ -34,25 +34,18 @@
 
 
 <script>
-
     var canvasI = document.getElementById("can"),
         ctx = canvasI.getContext("2d");
-
     canvasI.width = 220;
     canvasI.height = 220;
-
     var background = new Image();
     background.src = "../Resource/avater.jpg";
-
     background.onload = function () {
         ctx.drawImage(background, 0, 0);
-
     }
-
     function randomNumber(min, max) {
         return Math.floor(Math.random() * (max - min) + min);
     }
-
     // Used for creating a new FileList in a round-about way
     function FileListItem(a) {
         a = [].slice.call(Array.isArray(a) ? a : arguments)
@@ -61,58 +54,47 @@
         for (b = (new ClipboardEvent("")).clipboardData || new DataTransfer; c--;) b.items.add(a[c])
         return b.files
     }
-
     fileInput.onchange = async function change() {
         document.getElementById('progress').innerHTML = 'Loading... 10%';
         const maxWidth = 300
         const maxHeight = 500
         const result = []
-
         for (const file of this.files) {
-
             document.getElementById('progress').innerHTML = 'Loading...' + randomNumber(40, 80) + '%';
             const canvas = document.getElementById('can')
             // const canvas = document.createElement('canvas')
             const ctx = canvas.getContext('2d')
             const img = await file.image()
-
             // native alternetive way (don't take care of exif rotation)
             // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/createImageBitmap
             // const img = await createImageBitmap(file)
-
             // calculate new size
             const ratio = Math.min(maxWidth / img.width, maxHeight / img.height)
             const width = img.width * ratio + .5 | 0
             const height = img.height * ratio + .5 | 0
-
             // resize the canvas to the new dimensions
             canvas.width = width
             canvas.height = height
-
             // scale & draw the image onto the canvas
             ctx.drawImage(img, 0, 0, width, height)
-
             // just to preview
             // document.body.appendChild(canvas)
-
             // Get the binary (aka blob)
             const blob = await new Promise(rs => canvas.toBlob(rs, 1))
             const resizedFile = new File([blob], file.name, file)
             result.push(resizedFile)
         }
-
+        document.getElementById('progress').innerHTML = 'Loading... 90%';
         const fileList = new FileListItem(result)
-
+        document.getElementById('progress').innerHTML = 'Loading... 95%';
         // temporary remove event listener since
         // assigning a new filelist to the input
         // will trigger a new change event...
         fileInput.onchange = null
         fileInput.files = fileList
         fileInput.onchange = change
-
         document.getElementById('progress').innerHTML = '';
     }
-
 </script>
 
 

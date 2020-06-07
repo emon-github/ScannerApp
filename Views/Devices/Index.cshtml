@@ -16,7 +16,7 @@
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
         </a>*@
 </p>
-<table class="table">
+<table class="table" >
     <tr>
         <th>
             Device Name
@@ -27,17 +27,21 @@
         <th>
             Department
         </th>
+        <th>
+            Online
+        </th>
         @*<th>
                 @Html.DisplayNameFor(model => model.companyName)
             </th>*@
         <th>
-           Client
+            Client
         </th>
         <th></th>
-    </tr>
+    </tr >
 
     @foreach (var item in Model)
     {
+        string status = item.onlineStatus == "1" ? "On" : "Off";
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.equipName)
@@ -48,9 +52,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.deptName)
             </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.companyName)
-                </td>*@
+            <td style='font-weight:@(status == "On"? "bold": ""); color:@(status == "On"? "green": "black")'>
+                @Html.DisplayFor(modelItem => status)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.client)
             </td>
@@ -73,14 +77,14 @@
                     </a>
                 }
                 @*<a href="@Url.Action("Details", "Devices",new { id = item.id })" class="btn btn-info"  data-toggle = "tooltip" title = "Details">
-            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-        </a>
-        <a href="@Url.Action("Delete", "Devices",new { id = item.id })" class="btn btn-danger"  data-toggle = "tooltip" title = "Delete">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-        </a>*@
+                        <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                    </a>
+                    <a href="@Url.Action("Delete", "Devices",new { id = item.id })" class="btn btn-danger"  data-toggle = "tooltip" title = "Delete">
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                    </a>*@
 
                 @*@Html.ActionLink("Details", "Details", new { id = item.id }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.id })*@
+                    @Html.ActionLink("Delete", "Delete", new { id = item.id })*@
             </td>
         </tr>
     }
