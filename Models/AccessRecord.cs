@@ -22,11 +22,19 @@ namespace ScannerApp.Models
         public string equipName { get; set; }
         [Display(Name = "Photo")]
         public string photoUrl { get; set; }
+        public string basePhotoUrl { get { return "http://175.143.69.73:8085" + photoUrl; } }
         public string photoSize { get; set; }
         [Display(Name = "Name")]
-        public string name { get; set; }
-        [Display(Name = "Phone")]
+        public string name { get; set; }       
         public string phone { get; set; }
+        [Display(Name = "Phone")]
+        public string MyPhone
+        {
+            get
+            {
+                return phone.Length > 11 ? phone.Substring(5) : phone;
+            }
+        }
         public string arType { get; set; }
         [Display(Name = "Temperature")]
         public string temperature { get; set; }
@@ -35,7 +43,5 @@ namespace ScannerApp.Models
         public string deptName { get; set; }
         [Display(Name = "Card")]
         public string cardNum { get; set; }
-
-
     }
 }

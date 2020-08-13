@@ -12,9 +12,8 @@
         <dt>
             @Html.DisplayNameFor(model => model.photoUrl)
         </dt>
-
         <dd>
-            <img src="http://175.143.69.73:8085/@Url.Content(Model.photoUrl)" height=250 />
+            <img src="http://175.143.69.73:8085/@Url.Content(Model.photoUrl)" height=350 />
             <hr />
         </dd>
         <dt>
@@ -24,18 +23,22 @@
             @Html.DisplayFor(model => model.name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.phone)
+            @Html.DisplayNameFor(model => model.MyPhone)
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.phone)
+            @Html.DisplayFor(model => model.MyPhone)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.deptName)
         </dt>
-
         <dd>
             @Html.DisplayFor(model => model.deptName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.emerPer)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.emerPer)
         </dd>
     </dl>
 

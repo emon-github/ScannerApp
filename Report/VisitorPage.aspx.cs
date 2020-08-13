@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 
 namespace ScannerApp.Report
 {
-    public partial class PersonWise : System.Web.UI.Page
+    public partial class VisitorPage : System.Web.UI.Page
     {
         private ApplicationDbContext db = new ApplicationDbContext();
         protected void Page_Load(object sender, EventArgs e)
@@ -21,43 +21,27 @@ namespace ScannerApp.Report
 
         private void LoadData()
         {
-            List<AccessRecord> list = null;
+            List<Staff> list = null;
             string client = User.Identity.Name;
 
             if (User.IsInRole("Admin"))
             {
-                list = db.AccessRecords.Take(100).OrderByDescending(_ => _.recordTime).ToList();
+                list = db.Staffs.Take(100).OrderByDescending(_ => _.ORDER_BY_DERIVED_0).ToList();
             }
             else
             {
-                list = (from d in db.Devices
-                        join acc in db.AccessRecords on d.sn equals acc.sn
-                        where d.client == User.Identity.Name
-                        select acc).ToList();
-            }
-
-            DateTime dt = DateTime.Now;
-
-            if (!string.IsNullOrEmpty(txtDate.Text))
-            {
-                dt = Convert.ToDateTime(txtDate.Text);
-
-                list = list.Where(_ => _.recordTime.Date == dt.Date).ToList();
-            }
+                list = db.Staffs.Where(_ => _.job == client).OrderByDescending(_ => _.ORDER_BY_DERIVED_0).ToList();
+              //  list = db.Staffs.OrderByDescending(_ => _.ORDER_BY_DERIVED_0).ToList();
+            }            
 
             ReportViewer1.LocalReport.DataSources.Clear();
             ReportViewer1.LocalReport.EnableExternalImages = true;
             var reportDataSource1 = new Microsoft.Reporting.WebForms.ReportDataSource();
             reportDataSource1.Name = "DataSet1";
-            reportDataSource1.Value = list.OrderBy(_ => _.phone).OrderBy(_ => _.recordTime);
+            reportDataSource1.Value = list;
             ReportViewer1.LocalReport.DataSources.Add(reportDataSource1);
-            ReportViewer1.LocalReport.ReportPath = "Report/PersonWise.rdlc";
+            ReportViewer1.LocalReport.ReportPath = "Report/VisitorReport.rdlc";
             ReportViewer1.LocalReport.Refresh();
-        }
-
-        protected void btnView_Click(object sender, EventArgs e)
-        {
-            LoadData();
         }
     }
 }

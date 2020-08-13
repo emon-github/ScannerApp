@@ -2,6 +2,7 @@
 @model PagedList.IPagedList<ScannerApp.Models.Device>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 
 @{
     ViewBag.Title = "Index";
@@ -76,15 +77,19 @@
                         <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
                     </a>
                 }
+
+                <a href="@Request.Url.GetLeftPart(UriPartial.Authority)@Url.Content("~")Selfregistration?id=@item.sn"  target="_blank"  class="btn btn-warning btn-xs" data-toggle="tooltip" title="Visitor Registration">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                </a>
                 @*<a href="@Url.Action("Details", "Devices",new { id = item.id })" class="btn btn-info"  data-toggle = "tooltip" title = "Details">
-                        <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-                    </a>
-                    <a href="@Url.Action("Delete", "Devices",new { id = item.id })" class="btn btn-danger"  data-toggle = "tooltip" title = "Delete">
-                        <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                    </a>*@
+            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+        </a>
+        <a href="@Url.Action("Delete", "Devices",new { id = item.id })" class="btn btn-danger"  data-toggle = "tooltip" title = "Delete">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </a>*@
 
                 @*@Html.ActionLink("Details", "Details", new { id = item.id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.id })*@
+        @Html.ActionLink("Delete", "Delete", new { id = item.id })*@
             </td>
         </tr>
     }

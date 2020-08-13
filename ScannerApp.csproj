@@ -249,6 +249,10 @@
     <Compile Include="Migrations\202006040602466_add-ordrby-in-staff.Designer.cs">
       <DependentUpon>202006040602466_add-ordrby-in-staff.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202006110525173_add-staff-device-sn.cs" />
+    <Compile Include="Migrations\202006110525173_add-staff-device-sn.Designer.cs">
+      <DependentUpon>202006110525173_add-staff-device-sn.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccessRecord.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -278,6 +282,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ReportDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Report\VisitorPage.aspx.cs">
+      <DependentUpon>VisitorPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\VisitorPage.aspx.designer.cs">
+      <DependentUpon>VisitorPage.aspx</DependentUpon>
+    </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -293,6 +304,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Report\PersonWise.aspx" />
     <Content Include="Report\AccessRecordPage.aspx" />
+    <Content Include="Report\VisitorPage.aspx" />
     <Content Include="Resource\avater.jpg" />
     <Content Include="Resource\loading.gif" />
     <Content Include="Resource\logo_ItInterlight.png" />
@@ -304,7 +316,7 @@
       <DependentUpon>ReportDataSet.xsd</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\tscan - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\tscanner - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\tscan1 - Web Deploy.pubxml" />
     <None Include="Report\ReportDataSet.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
@@ -399,6 +411,7 @@
     <Content Include="Views\UserList\Edit.cshtml" />
     <Content Include="Views\UserList\Delete.cshtml" />
     <Content Include="Views\Selfregistration\UploadSelfie.cshtml" />
+    <Content Include="Views\Reports\VisitorReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202005082021448_initial-create.resx">
@@ -425,6 +438,12 @@
     <EmbeddedResource Include="Migrations\202006040602466_add-ordrby-in-staff.resx">
       <DependentUpon>202006040602466_add-ordrby-in-staff.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202006110525173_add-staff-device-sn.resx">
+      <DependentUpon>202006110525173_add-staff-device-sn.cs</DependentUpon>
+    </EmbeddedResource>
+    <Content Include="Report\VisitorReport.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

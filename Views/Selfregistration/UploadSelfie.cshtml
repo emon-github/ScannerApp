@@ -1,18 +1,34 @@
 ﻿@*<form id="uploadImageForm" enctype="multipart/form-data">*@
-<h2> Photo</h2>
-<label class="custom-file-label" for="takePictureField" style="color:blue"> Please choose a file or take a selfie</label>
+@*<h2> Photo</h2>*@
+<label class="custom-file-label" for="takePictureField" style="color:blue ; font-size:large; padding-top:10px; padding-bottom:10px;">
+    Please choose a file or take a selfie
+</label>
 <input name="imagefile[]" multiple class="custom-file-input form-control" type="file" id="takePictureField" accept="image/*" onchange="uploadPhotos('UploadSelfyDemo')" />
 <div style="text-align:center; padding:10px; display:none" id="loadingdiv">
     <img src="~/Resource/loading.gif" />
 </div>
 <div style="text-align:center; padding:10px;" id="candiv">
+    <button id="clockwise" class="btn-danger">
+        <span class="glyphicon glyphicon-retweet" aria-hidden="true"> Rotate</span>
+    </button>
+    <hr />
     <label for="takePictureField">
         <canvas class="canvas" id="can"></canvas>
     </label>
 </div>
+<div style="text-align:center; padding:10px;" id="btndiv">
+    <button id="btnSubmit" class="btn-lg btn-block btn-primary">Submit</button>
+</div>
 @*</form>*@
+
 <script src="~/Scripts/jquery-3.4.1.js"></script>
+
 <script>
+    const btnSubmit = document.getElementById('btnSubmit')
+    const btnRotate = document.getElementById('clockwise')
+    btnSubmit.disabled = true;
+    btnRotate.disabled = true;
+
     var canvasI = document.getElementById("can"),
         ctx = canvasI.getContext("2d");
     canvasI.width = 220;
@@ -22,11 +38,12 @@
     background.onload = function () {
         ctx.drawImage(background, 0, 0);
     }
+
+    var img = new Image;
+
     //==============
     window.uploadPhotos = function (url) {
-
         try {
-
         $("#candiv").hide();
         $("#loadingdiv").show();
         // Read in file
@@ -43,9 +60,10 @@
                 image.onload = function (imageEvent) {
 
                     // Resize the image
-                    var canvas = document.createElement('canvas');
-                    var MAX_WIDTH = 600;
-                    var MAX_HEIGHT = 800;
+                   // var canvas = document.createElement('canvas');
+                    var canvas = document.getElementById("can")
+                    var MAX_WIDTH = 400;
+                    var MAX_HEIGHT = 600;
                     var width = image.width;
                     var height = image.height;
 
@@ -77,28 +95,23 @@
                     canvas.width = width;
                     canvas.height = height;
                     canvas.getContext('2d').drawImage(image, 0, 0, width, height);
-                    var dataUrl = canvas.toDataURL('image/jpeg');
-                    var resizedImage = dataURLToBlob(dataUrl);
 
-                    //var blobBin = atob(dataUrl.split(',')[1]);
-                    //var array = [];
-                    //for (var i = 0; i < blobBin.length; i++) {
-                    //    array.push(blobBin.charCodeAt(i));
-                    //}
-                    //var file1 = new Blob([new Uint8Array(array)], { type: 'image/png', name: "avatar.png" });
+                    $("#candiv").show();
+                    $("#loadingdiv").hide();
 
+                    btnSubmit.disabled = false;
+                    btnRotate.disabled = false;
+                    img.src = canvas.toDataURL('image/jpeg');
 
-                    //$.event.trigger({
-                    //    type: "imageResized",
-                    //    blob: resizedImage,
-                    //    url: dataUrl
-                    //});
+                   // var dataUrl = canvas.toDataURL('image/jpeg');
 
-                    var fd = new FormData(document.forms[0]);
-                   // fd.append('image_data', resizedImage);
-                    fd.append("image", resizedImage);
+                   // var resizedImage = dataURLToBlob(dataUrl);
 
-                     $.ajax({
+                   // var fd = new FormData(document.forms[0]);
+                   //// fd.append('image_data', resizedImage);
+                   // fd.append("image", resizedImage);
+
+                     @*$.ajax({
                         url: '@Url.Action("UploadSelfie", "Selfregistration")',
                         data: fd,
                         cache: false,
@@ -113,9 +126,11 @@
                             alert("Error Message :" + data.msg);
                         }
 
-                    });
+                    });*@
                 }
                 image.src = readerEvent.target.result;
+
+
 
             }
             reader.readAsDataURL(file);
@@ -152,26 +167,83 @@
         return new Blob([uInt8Array], { type: contentType });
     }
     /* End Utility function to convert a canvas to a BLOB      */
+    //==========
+    var angleInDegrees = 0;
+    $("#clockwise").click(function () {
+        //angleInDegrees += 90;
+        //drawRotated(angleInDegrees);
 
-    /* Handle image resized events */
-    @*$(document).on("imageResized", function (event) {
-        alert("event ajax");
+        angleInDegrees = (angleInDegrees + 90) % 360;
+        drawRotated(angleInDegrees);
+    });
 
-        var data = new FormData($("form[id*='uploadImageForm']")[0]);
-        if (event.blob) {
-            data.append('image_data', event.blob);
+    $("#counterclockwise").click(function () {
+        //angleInDegrees -= 90;
+        //drawRotated(angleInDegrees);
+        if (angleInDegrees == 0)
+            angleInDegrees = 270;
+        else
+            angleInDegrees = (angleInDegrees - 90) % 360;
+        drawRotated(angleInDegrees);
+    });
 
-            $.ajax({
-                url: '@Url.Action("UploadSelfyDemo", "Selfregistration")',
-                data: data,
-                cache: false,
-                contentType: false,
-                processData: false,
-                type: 'POST',
-                success: function (data) {
-                    //handle errors...
-                }
-            });
+    function drawRotated(degrees) {
+
+        //alert(degrees);
+        var canvas = document.getElementById("can")
+        var ctx = canvas.getContext("2d");
+
+        //ctx.clearRect(0, 0, canvas.width, canvas.height);
+        //ctx.save();
+        //ctx.translate(canvas.width / 2, canvas.height / 2);
+        //ctx.rotate(degrees * Math.PI / 180);
+        //ctx.drawImage(img, -img.width / 2, -img.width / 2);
+        //ctx.restore();
+
+        if (degrees == 90 || degrees == 270) {
+            canvas.width = img.height;
+            canvas.height = img.width;
+        } else {
+            canvas.width = img.width;
+            canvas.height = img.height;
         }
-    });*@
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        if (degrees == 90 || degrees == 270) {
+            ctx.translate(img.height / 2, img.width / 2);
+        }
+        else {
+            ctx.translate(img.width / 2, img.height / 2);
+        }
+        ctx.rotate(degrees * Math.PI / 180);
+        ctx.drawImage(img, -img.width / 2, -img.height / 2);
+        ctx.restore();
+    }
+
+    $("#btnSubmit").click(function () {
+        var canvas = document.getElementById("can")
+        var dataUrl = canvas.toDataURL('image/jpeg');
+        var resizedImage = dataURLToBlob(dataUrl);
+
+        var fd = new FormData(document.forms[0]);
+        fd.append("image", resizedImage);
+
+        $.ajax({
+                        url: '@Url.Action("UploadSelfie", "Selfregistration")',
+                        data: fd,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        type: 'POST',
+                         success: function (data) {
+                           //  alert(data.msg);
+                           window.location.href= '@Url.Action("Notice", "Selfregistration")'
+                         },
+                        error: function () {
+                            alert("Error Message :" + data.msg);
+                        }
+
+                    });
+     });
 </script>

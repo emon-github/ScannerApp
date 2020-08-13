@@ -31,7 +31,7 @@ namespace ScannerApp.Report
 
             if (User.IsInRole("Admin"))
             {
-                list = db.AccessRecords.OrderByDescending(_ => _.recordTime).ToList();
+                list = db.AccessRecords.Take(100).OrderByDescending(_ => _.recordTime).ToList();
             }
             else
             {
@@ -52,6 +52,7 @@ namespace ScannerApp.Report
             }
 
             ReportViewer1.LocalReport.DataSources.Clear();
+            ReportViewer1.LocalReport.EnableExternalImages = true;
             var reportDataSource1 = new Microsoft.Reporting.WebForms.ReportDataSource();
             reportDataSource1.Name = "DataSet1";
             reportDataSource1.Value = list.OrderByDescending(_ => _.recordTime);

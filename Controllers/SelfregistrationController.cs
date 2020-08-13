@@ -43,9 +43,10 @@ namespace ScannerApp.Controllers
                     Device device = db.Devices.Where(_ => _.sn == registration.ID).SingleOrDefault();
 
                     TempData["_name"] = registration.Name;
-                    TempData["_phone"] = registration.Phone;
+                    TempData["_phone"] = device.sn.Substring(8, 4) + "-" + registration.Phone;
                     TempData["_job"] = string.IsNullOrEmpty(device.client) ? device.sn : device.client;
                     TempData["_sex"] = registration.Gender.ToString();
+                    TempData["_devicesn"] = device.sn;
 
 
 
@@ -132,7 +133,7 @@ namespace ScannerApp.Controllers
                 return token;
             }
         }
-       
+
         private async Task<string> GetPersonId(string phone, string token)
         {
             string personId = "";
@@ -158,156 +159,147 @@ namespace ScannerApp.Controllers
             return personId;
         }
 
-        public ActionResult UploadPhoto()
-        {
-            return View();
-        }
-
-        //[HttpPost]
-        //public async Task<ActionResult> UploadPhoto1()
+        //public ActionResult UploadPhoto()
         //{
-
-        //        var data = Request.Form;
-        //        byte[] valor1 = Encoding.ASCII.GetBytes(data["image"].ToString());
-
-
         //    return View();
         //}
 
-        [HttpPost]
-        public async Task<ActionResult> UploadPhoto(HttpPostedFileBase file)
-        {
-            string perId = "";
-            string token = "";
 
-            if (TempData["personID"] != null)
-            {
-                perId = TempData["personID"].ToString();
-            }
+        //[HttpPost]
+        //public async Task<ActionResult> UploadPhoto(HttpPostedFileBase file)
+        //{
+        //    string perId = "";
+        //    string token = "";
 
-            if (TempData["_token"] != null)
-            {
-                token = TempData["_token"].ToString();
-            }
+        //    if (TempData["personID"] != null)
+        //    {
+        //        perId = TempData["personID"].ToString();
+        //    }
 
-            if (file != null)
-            {
-                var fileNameExt = Path.GetFileName(file.FileName);
+        //    if (TempData["_token"] != null)
+        //    {
+        //        token = TempData["_token"].ToString();
+        //    }
 
-                byte[] paramFileStream = new byte[file.ContentLength];
-                file.InputStream.Read(paramFileStream, 0, paramFileStream.Length);
+        //    if (file != null)
+        //    {
+        //        var fileNameExt = Path.GetFileName(file.FileName);
 
-                using (var client = new HttpClient())
-                {
-                    var url = "http://175.143.69.73:8085/cloudIntercom/insertFaceFile";
-                    client.DefaultRequestHeaders.Add("token", token);
-                    var formContent = new MultipartFormDataContent
-                                        {
-                                        {new StringContent(perId),"perId"},
-                                        {new StringContent("0"),"angle" },
-                                        {new StreamContent(new MemoryStream(paramFileStream)),"files",fileNameExt}
-                                        };
+        //        byte[] paramFileStream = new byte[file.ContentLength];
+        //        file.InputStream.Read(paramFileStream, 0, paramFileStream.Length);
 
-                    var response = await client.PostAsync(url, formContent);
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    }
-                }
-                return RedirectToAction("Notice");
-            }
-            else
-            {
-                ViewBag.Message = "Please Select any file";
-                return View();
-            }
-        }
+        //        using (var client = new HttpClient())
+        //        {
+        //            var url = "http://175.143.69.73:8085/cloudIntercom/insertFaceFile";
+        //            client.DefaultRequestHeaders.Add("token", token);
+        //            var formContent = new MultipartFormDataContent
+        //                                {
+        //                                {new StringContent(perId),"perId"},
+        //                                {new StringContent("0"),"angle" },
+        //                                {new StreamContent(new MemoryStream(paramFileStream)),"files",fileNameExt}
+        //                                };
 
-        public ActionResult UploadSelfy()
-        {
-            return View();
-        }
+        //            var response = await client.PostAsync(url, formContent);
+        //            if (response.StatusCode == HttpStatusCode.OK)
+        //            {
+        //                var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+        //            }
+        //        }
+        //        return RedirectToAction("Notice");
+        //    }
+        //    else
+        //    {
+        //        ViewBag.Message = "Please Select any file";
+        //        return View();
+        //    }
+        //}
 
-        [HttpPost]
-        public async Task<ActionResult> UploadSelfy(int? id)
-        {
-            string perId = "";
-            HttpPostedFileBase file = Request.Files[0];
-         
-            string token = await GetLoginTokenAsync();
-            string _deptId = TempData["_deptId"].ToString();
-            string _name = TempData["_name"].ToString();
-            string _phone = TempData["_phone"].ToString();
-            string _job = TempData["_job"].ToString();
-            string _sex = TempData["_sex"].ToString();
+        //public ActionResult UploadSelfy()
+        //{
+        //    return View();
+        //}
 
-            if (file != null)
-            {
-                var fileNameExt = Path.GetFileName(file.FileName);
+        //[HttpPost]
+        //public async Task<ActionResult> UploadSelfy(int? id)
+        //{
+        //    string perId = "";
+        //    HttpPostedFileBase file = Request.Files[0];
 
-                byte[] paramFileStream = new byte[file.ContentLength];
-                file.InputStream.Read(paramFileStream, 0, paramFileStream.Length);
+        //    string token = await GetLoginTokenAsync();
+        //    string _deptId = TempData["_deptId"].ToString();
+        //    string _name = TempData["_name"].ToString();
+        //    string _phone = TempData["_phone"].ToString();
+        //    string _job = TempData["_job"].ToString();
+        //    string _sex = TempData["_sex"].ToString();
 
-                using (var client = new HttpClient())
-                {
-                    //================
-                    var url = "http://175.143.69.73:8085/cloudIntercom/insertPerson";
-                    client.DefaultRequestHeaders.Add("token", token);
-                    var parameters = new Dictionary<string, string> {
-                                    { "deptId", _deptId },
-                                    { "name", _name},
-                                    { "phone", _phone },
-                                    { "job", _job},
-                                    { "sex", _sex }};
-                    var encodedContent = new FormUrlEncodedContent(parameters);
+        //    if (file != null)
+        //    {
+        //        var fileNameExt = Path.GetFileName(file.FileName);
 
-                    var response = await client.PostAsync(url, encodedContent).ConfigureAwait(false);
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+        //        byte[] paramFileStream = new byte[file.ContentLength];
+        //        file.InputStream.Read(paramFileStream, 0, paramFileStream.Length);
 
-                        perId = await GetPersonId(_phone, token);
-                    }
-                    //================
-                }
-                using (var client = new HttpClient())
-                {
-                    var url = "http://175.143.69.73:8085/cloudIntercom/insertFaceFile";
-                    client.DefaultRequestHeaders.Add("token", token);
-                    var formContent = new MultipartFormDataContent
-                                        {
-                                            {new StringContent(perId),"perId"},
-                                            {new StringContent("0"),"angle" },
-                                            {new StreamContent(new MemoryStream(paramFileStream)),"files",fileNameExt}
-                                        };
+        //        using (var client = new HttpClient())
+        //        {
+        //            //================
+        //            var url = "http://175.143.69.73:8085/cloudIntercom/insertPerson";
+        //            client.DefaultRequestHeaders.Add("token", token);
+        //            var parameters = new Dictionary<string, string> {
+        //                            { "deptId", _deptId },
+        //                            { "name", _name},
+        //                            { "phone", _phone },
+        //                            { "job", _job},
+        //                            { "sex", _sex }};
+        //            var encodedContent = new FormUrlEncodedContent(parameters);
 
-                    var response = await client.PostAsync(url, formContent);
-                    if (response.StatusCode == HttpStatusCode.OK)
-                    {
-                        var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                    }
-                }
-                return RedirectToAction("Notice");
-            }
-            else
-            {
-                ViewBag.Message = "Please Select any file";
-                return View();
-            }
-        }
+        //            var response = await client.PostAsync(url, encodedContent).ConfigureAwait(false);
+        //            if (response.StatusCode == HttpStatusCode.OK)
+        //            {
+        //                var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
+        //                perId = await GetPersonId(_phone, token);
+        //            }
+        //            //================
+        //        }
+        //        using (var client = new HttpClient())
+        //        {
+        //            var url = "http://175.143.69.73:8085/cloudIntercom/insertFaceFile";
+        //            client.DefaultRequestHeaders.Add("token", token);
+        //            var formContent = new MultipartFormDataContent
+        //                                {
+        //                                    {new StringContent(perId),"perId"},
+        //                                    {new StringContent("0"),"angle" },
+        //                                    {new StreamContent(new MemoryStream(paramFileStream)),"files",fileNameExt}
+        //                                };
 
+        //            var response = await client.PostAsync(url, formContent);
+        //            if (response.StatusCode == HttpStatusCode.OK)
+        //            {
+        //                var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+        //            }
+        //        }
+        //        return RedirectToAction("Notice");
+        //    }
+        //    else
+        //    {
+        //        ViewBag.Message = "Please Select any file";
+        //        return View();
+        //    }
+        //}
+
+        [HttpGet]
         public ActionResult UploadSelfie()
         {
             return View();
         }
-
 
         [HttpPost]
         public async Task<JsonResult> UploadSelfie(string image_data)
         {
             try
             {
+                string userAgent = Request.UserAgent;
+
                 string perId = "";
                 HttpPostedFileBase file = Request.Files[0];
 
@@ -322,6 +314,7 @@ namespace ScannerApp.Controllers
                 string _phone = TempData["_phone"].ToString();
                 string _job = TempData["_job"].ToString();
                 string _sex = TempData["_sex"].ToString();
+                string _sn = TempData["_devicesn"].ToString();
 
                 if (file != null)
                 {
@@ -340,6 +333,7 @@ namespace ScannerApp.Controllers
                                     { "name", _name},
                                     { "phone", _phone },
                                     { "job", _job},
+                                    { "emerPer", _sn},
                                     { "sex", _sex }};
                         var encodedContent = new FormUrlEncodedContent(parameters);
 
@@ -352,6 +346,8 @@ namespace ScannerApp.Controllers
                         }
                         //================
                     }
+
+                    string str = "";
                     using (var client = new HttpClient())
                     {
                         var url = "http://175.143.69.73:8085/cloudIntercom/insertFaceFile";
@@ -363,14 +359,40 @@ namespace ScannerApp.Controllers
                                             {new StreamContent(new MemoryStream(paramFileStream)),"files",fileNameExt}
                                         };
 
-                        var response = await client.PostAsync(url, formContent);
-                        if (response.StatusCode == HttpStatusCode.OK)
+                        try
                         {
-                            var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            str = "s1+";
+                            HttpResponseMessage response = client.PostAsync(url, formContent).Result;
+                            str += str + response.ToString();
+                            if (!response.IsSuccessStatusCode)
+                            {
+                                return Json(new { msg = "1: " + response.ToString() });
+                            }
                         }
+                        catch (HttpRequestException ex)
+                        {
+                            return Json(new { msg = "4: " + str + ex.Message });
+                        }
+                        catch (HttpException ex)
+                        {
+                            return Json(new { msg = "3: " + str + ex.Message });
+                        }
+                        catch (Exception ex)
+                        {
+                            return Json(new { msg = "2: " + str + ex.StackTrace + "::" + ex.InnerException});
+                        }
+
+
+
+                        //var response = await client.PostAsync(url, formContent);
+                        //if (response.StatusCode == HttpStatusCode.OK)
+                        //{
+                        //    var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);                          
+                        //}
+
                     }
 
-                    return Json(new { success = true });
+                    return Json(new { msg = true });
                 }
                 else
                 {
@@ -382,7 +404,6 @@ namespace ScannerApp.Controllers
                 return Json(new { msg = ex.Message });
             }
         }
-
 
         //[HttpPost]
         //public async Task<ActionResult> UploadSelfie(string image_data)
@@ -459,8 +480,6 @@ namespace ScannerApp.Controllers
         //        return View();
         //    }
         //}
-
-
 
         public ActionResult Notice()
         {

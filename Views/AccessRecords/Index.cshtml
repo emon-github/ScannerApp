@@ -25,15 +25,6 @@
 <table class="table">
     <tr>
         <th>
-            Time
-        </th>
-        <th>
-            Device
-        </th>
-        <th>
-            Device Name
-        </th>
-        <th>
             Photo
         </th>
         <th>
@@ -44,6 +35,15 @@
         </th>
         <th>
             Temperature
+        </th>
+        <th>
+            Time
+        </th>
+        <th>
+            Device
+        </th>
+        <th>
+            Device Name
         </th>
         <th>
             Department Name
@@ -58,47 +58,45 @@
     {
         string name = item.name == "" ? "Stranger" : item.name;
 
-        <tr style='color: @( Convert.ToDecimal( item.temperature.Substring(0,4)) >= Convert.ToDecimal( 37.5 )? "red" : "black");'>
-            <td>
-                @Html.DisplayFor(modelItem => item.recordTime)
-            </td>
+<tr style='color: @( Convert.ToDecimal( item.temperature.Substring(0,4)) >= Convert.ToDecimal( 37.5 )? "red" : "black");'>
+    <td>       
+        <img src="http://175.143.69.73:8085/@Url.Content( item.photoUrl)" height="60" alt="Image" />
+    </td>
+    <td style='color:@(name == "Stranger"? "blue": "black")'>
+        @Html.DisplayFor(modelItem => name)
+    </td>   
+    <td>
+        @Html.DisplayFor(modelItem => item.MyPhone)
+    </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.sn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.equipName)
-            </td>
-            <td>
-                @*@Html.DisplayFor(modelItem => item.photoUrl)*@
-                <img src="http://175.143.69.73:8085/@Url.Content( item.photoUrl)" height="50" alt="Image" />
-            </td>
-            <td style='color:@(name == "Stranger"? "blue": "black")'>
-                @Html.DisplayFor(modelItem => name)
-            </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.name)
-                </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.phone)
-            </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.temperature)
+    </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.temperature)
-            </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.recordTime)
+    </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.deptName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.cardNum)
-            </td>
-            <td>
-                <a href="@Url.Action("Details", "AccessRecords",new { id = item.id })" class="btn btn-info" data-toggle="tooltip" title="Details">
-                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-                </a>
-            </td>
-        </tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.sn)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.equipName)
+    </td>
+
+
+    <td>
+        @Html.DisplayFor(modelItem => item.deptName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.cardNum)
+    </td>
+    <td>
+        <a href="@Url.Action("Details", "AccessRecords",new { id = item.id })" class="btn btn-info" data-toggle="tooltip" title="Details">
+            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+        </a>
+    </td>
+</tr>
     }
 
 </table>

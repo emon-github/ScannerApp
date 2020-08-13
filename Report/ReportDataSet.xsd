@@ -109,6 +109,20 @@
                 </xs:simpleType>
               </xs:element>
               <xs:element name="recordTime" msprop:Generator_ColumnVarNameInTable="columnrecordTime" msprop:Generator_ColumnPropNameInRow="recordTime" msprop:Generator_ColumnPropNameInTable="recordTimeColumn" msprop:Generator_UserColumnName="recordTime" type="xs:dateTime" />
+              <xs:element name="MyPhone" msprop:Generator_ColumnVarNameInTable="columnMyPhone" msprop:Generator_ColumnPropNameInRow="MyPhone" msprop:Generator_ColumnPropNameInTable="MyPhoneColumn" msprop:Generator_UserColumnName="MyPhone" type="xs:string" minOccurs="0" />
+              <xs:element name="basePhotoUrl" msprop:Generator_ColumnVarNameInTable="columnbasePhotoUrl" msprop:Generator_ColumnPropNameInRow="basePhotoUrl" msprop:Generator_ColumnPropNameInTable="basePhotoUrlColumn" msprop:Generator_UserColumnName="basePhotoUrl" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Visitors" msprop:Generator_TableClassName="VisitorsDataTable" msprop:Generator_TableVarName="tableVisitors" msprop:Generator_RowChangedName="VisitorsRowChanged" msprop:Generator_TablePropName="Visitors" msprop:Generator_RowDeletingName="VisitorsRowDeleting" msprop:Generator_RowChangingName="VisitorsRowChanging" msprop:Generator_RowEvHandlerName="VisitorsRowChangeEventHandler" msprop:Generator_RowDeletedName="VisitorsRowDeleted" msprop:Generator_RowClassName="VisitorsRow" msprop:Generator_UserTableName="Visitors" msprop:Generator_RowEvArgName="VisitorsRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="photoUrl" msprop:Generator_ColumnVarNameInTable="columnphotoUrl" msprop:Generator_ColumnPropNameInRow="photoUrl" msprop:Generator_ColumnPropNameInTable="photoUrlColumn" msprop:Generator_UserColumnName="photoUrl" type="xs:string" minOccurs="0" />
+              <xs:element name="name" msprop:Generator_ColumnVarNameInTable="columnname" msprop:Generator_ColumnPropNameInRow="name" msprop:Generator_ColumnPropNameInTable="nameColumn" msprop:Generator_UserColumnName="name" type="xs:string" minOccurs="0" />
+              <xs:element name="MyPhone" msprop:Generator_ColumnVarNameInTable="columnMyPhone" msprop:Generator_ColumnPropNameInRow="MyPhone" msprop:Generator_ColumnPropNameInTable="MyPhoneColumn" msprop:Generator_UserColumnName="MyPhone" type="xs:string" minOccurs="0" />
+              <xs:element name="deptName" msprop:Generator_ColumnVarNameInTable="columndeptName" msprop:Generator_ColumnPropNameInRow="deptName" msprop:Generator_ColumnPropNameInTable="deptNameColumn" msprop:Generator_UserColumnName="deptName" type="xs:string" minOccurs="0" />
+              <xs:element name="emerPer" msprop:Generator_ColumnVarNameInTable="columnemerPer" msprop:Generator_ColumnPropNameInRow="emerPer" msprop:Generator_ColumnPropNameInTable="emerPerColumn" msprop:Generator_UserColumnName="emerPer" type="xs:string" minOccurs="0" />
+              <xs:element name="basePhotoUrl" msprop:Generator_ColumnVarNameInTable="columnbasePhotoUrl" msprop:Generator_ColumnPropNameInRow="basePhotoUrl" msprop:Generator_ColumnPropNameInTable="basePhotoUrlColumn" msprop:Generator_UserColumnName="basePhotoUrl" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

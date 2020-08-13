@@ -21,5 +21,10 @@ namespace ScannerApp.Controllers
         {
             return View();
         }
+
+        public ActionResult VisitorReport()
+        {
+            return View();
+        }
     }
 }

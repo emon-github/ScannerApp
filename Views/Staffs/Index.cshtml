@@ -30,36 +30,42 @@
         <th>
             Department
         </th>
+        <th>
+            Device
+        </th>
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @*@Html.DisplayFor(modelItem => item.photoUrl)*@
-                <img src="http://175.143.69.73:8085/@Url.Content(item.photoUrl)" height="50" alt="Image" />
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.phone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.deptName)
-            </td>
-            <td>
-                <a href="@Url.Action("Details", "Staffs",new { id = item.perId })" class="btn btn-info" data-toggle="tooltip" title="Details">
-                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-                </a>
+<tr>
+    <td>
+        @*@Html.DisplayFor(modelItem => item.photoUrl)*@
+        <img src="http://175.143.69.73:8085/@Url.Content(item.photoUrl)" height="50" alt="Image" />
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.MyPhone)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.deptName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.emerPer)
+    </td>
+    <td>
+        <a href="@Url.Action("Details", "Staffs",new { id = item.perId })" class="btn btn-info" data-toggle="tooltip" title="Details">
+            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+        </a>
 
-                 <a href="@Url.Action("Delete", "Staffs",new { id = item.perId })" class="btn btn-danger" data-toggle="tooltip" title="Delete">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-                </a>
+        <a href="@Url.Action("Delete", "Staffs",new { id = item.perId })" class="btn btn-danger" data-toggle="tooltip" title="Delete">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+        </a>
 
-            </td>
-        </tr>
+    </td>
+</tr>
     }
 
 </table>
@@ -67,6 +73,7 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 
 @Html.PagedListPager(Model, page => Url.Action("Index", new { page , currentFilter = ViewBag.CurrentFilter }))
 
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
 <script>
     $(function () { $("[data-toggle = 'tooltip']").tooltip(); });
 </script>
