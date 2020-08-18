@@ -17,7 +17,14 @@
                 <div style="padding:5px;">
                     <asp:Label ID="Label1" runat="server" Text="Date :"></asp:Label>
                     <asp:TextBox ID="txtDate" runat="server" TextMode="Date"></asp:TextBox>
+
+                     <asp:Label ID="Label2" runat="server" Text="Phone :"></asp:Label>
+                    <asp:TextBox ID="txtPhone" runat="server"></asp:TextBox>
+
                     <asp:Button ID="btnView" runat="server"  OnClick="btnView_Click" Text="View" CssClass="btn btn-info"/>                   
+                </div>
+                <div>
+                    <asp:Label ID="lblMsg" Font-Bold="true" ForeColor="Blue" runat="server" Text=""></asp:Label>
                 </div>
                 <rsweb:ReportViewer ID="ReportViewer1" runat="server" AsyncRendering="false" Width="100%" Height="500">
                 </rsweb:ReportViewer>

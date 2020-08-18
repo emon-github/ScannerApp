@@ -13,10 +13,13 @@
      <div style="width: auto;">
         <form id="form1" runat="server" style="width: 100%; height: 100%;">
             <asp:ScriptManager ID="ScriptManager1" runat="server"></asp:ScriptManager>
+          
             <div>
                 <div style="padding:5px;">
-                   <asp:Label ID="Label1" runat="server" Text="Date :"></asp:Label>
-                    <asp:TextBox ID="txtDate" runat="server" TextMode="Date"></asp:TextBox>
+                   <asp:Label ID="Label1" runat="server" Text="Date From:"></asp:Label>
+                    <asp:TextBox ID="dtFrom" runat="server" TextMode="Date" ></asp:TextBox>
+                     <asp:Label ID="Label2" runat="server" Text="To :"></asp:Label>
+                    <asp:TextBox ID="dtTo" runat="server" TextMode="Date"></asp:TextBox>
                     <asp:Button ID="btnView" runat="server"  OnClick="btnView_Click" Text="View" CssClass="btn btn-info"/> 
                 </div>
                 <rsweb:ReportViewer ID="ReportViewer1" runat="server" AsyncRendering="false" Width="100%" Height="500">
