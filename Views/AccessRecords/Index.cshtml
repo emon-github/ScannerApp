@@ -11,15 +11,16 @@
 
 @using (Html.BeginForm())
 {
-    <p style="float:left">
-        Search: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+    <div style="float:left">
+        From :  <input type="date" name="dateFrom" id="dateFrom" class="date_picker" value="@string.Format("{0:yyyy-MM-dd}", ViewBag.dtF)">
+        To : <input type="date" name="dateTo" id="dateTo" class="date_picker" value="@string.Format("{0:yyyy-MM-dd}", ViewBag.dtT)">
+        Search : @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
         <input type="submit" value="Search" />
-    </p>
+    </div>
 
     <p style="float:right; color:red;">
         Temp >= 37.5 are red.
     </p>
-
 }
 
 <table class="table">
@@ -58,52 +59,55 @@
     {
         string name = item.name == "" ? "Stranger" : item.name;
 
-<tr style='color: @( Convert.ToDecimal( item.temperature.Substring(0,4)) >= Convert.ToDecimal( 37.5 )? "red" : "black");'>
-    <td>       
-        <img src="http://175.143.69.73:8085/@Url.Content( item.photoUrl)" height="60" alt="Image" />
-    </td>
-    <td style='color:@(name == "Stranger"? "blue": "black")'>
-        @Html.DisplayFor(modelItem => name)
-    </td>   
-    <td>
-        @Html.DisplayFor(modelItem => item.MyPhone)
-    </td>
+        <tr style='color: @( Convert.ToDecimal( item.temperature.Substring(0,4)) >= Convert.ToDecimal( 37.5 )? "red" : "black");'>
+            <td>
+                <img src="http://175.143.69.73:8085/@Url.Content( item.photoUrl)" height="60" alt="Image" />
+            </td>
+            <td style='color:@(name == "Stranger"? "blue": "black")'>
+                @Html.DisplayFor(modelItem => name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MyPhone)
+            </td>
 
-    <td>
-        @Html.DisplayFor(modelItem => item.temperature)
-    </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.temperature)
+            </td>
 
-    <td>
-        @Html.DisplayFor(modelItem => item.recordTime)
-    </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.recordTime)
+            </td>
 
-    <td>
-        @Html.DisplayFor(modelItem => item.sn)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.equipName)
-    </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.sn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.equipName)
+            </td>
 
 
-    <td>
-        @Html.DisplayFor(modelItem => item.deptName)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.cardNum)
-    </td>
-    <td>
-        <a href="@Url.Action("Details", "AccessRecords",new { id = item.id })" class="btn btn-info" data-toggle="tooltip" title="Details">
-            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-        </a>
-    </td>
-</tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.deptName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cardNum)
+            </td>
+            <td>
+                <a href="@Url.Action("Details", "AccessRecords",new { id = item.id })" class="btn btn-info" data-toggle="tooltip" title="Details">
+                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                </a>
+            </td>
+        </tr>
     }
 
 </table>
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter }))
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, currentFilter = ViewBag.CurrentFilter, datefrom = ViewBag.dtF, dateTo = ViewBag.dtT }))
 
 <script>
     $(function () { $("[data-toggle = 'tooltip']").tooltip(); });
+
+    $('.date_picker').datepicker();
+
 </script>

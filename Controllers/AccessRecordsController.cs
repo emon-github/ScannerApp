@@ -16,8 +16,22 @@ namespace ScannerApp.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: AccessRecords
-        public ActionResult Index(string currentFilter, string searchString, int? page)
+        public ActionResult Index(string currentFilter, string searchString, int? page, DateTime? dateFrom, DateTime? dateTo)
         {
+            DateTime dtf = ViewBag.dtF = DateTime.Now;
+            if (dateFrom != null)
+            {
+                dtf = ViewBag.dtF = Convert.ToDateTime(dateFrom);
+            }
+
+            ViewBag.dtT = DateTime.Now;
+            DateTime dtt = DateTime.Now.AddDays(1);
+            if (dateTo != null)
+            {
+                ViewBag.dtT = Convert.ToDateTime(dateTo);
+                dtt = Convert.ToDateTime(dateTo).AddDays(1);
+            }
+
             if (searchString != null)
             {
                 searchString = searchString.ToLower();
@@ -34,14 +48,18 @@ namespace ScannerApp.Controllers
 
             if (User.IsInRole("Admin"))
             {
-                list = db.AccessRecords.Where(_ => !string.IsNullOrEmpty( _.temperature )).OrderByDescending(_ => _.recordTime).ToList();
+                list = db.AccessRecords
+                    .Where(_ => !string.IsNullOrEmpty(_.temperature))
+                    .Where(_ => _.recordTime >= dtf.Date)
+                    .Where(_ => _.recordTime <= dtt.Date)
+                    .OrderByDescending(_ => _.recordTime).ToList();
             }
             else
             {
 
                 list = (from d in db.Devices
                         join acc in db.AccessRecords on d.sn equals acc.sn
-                        where d.client == User.Identity.Name && !string.IsNullOrEmpty(acc.temperature )
+                        where d.client == User.Identity.Name && !string.IsNullOrEmpty(acc.temperature)
                         select acc).OrderByDescending(_ => _.recordTime).ToList();
 
                 // list = db.AccessRecords.OrderByDescending(_ => _.recordTime).ToList();
